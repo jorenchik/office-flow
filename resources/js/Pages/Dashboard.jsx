@@ -10,7 +10,9 @@ export default function Dashboard({ auth }) {
     return (
         <AuthenticatedLayout user={auth.user}>
             <ContentFrame activeNavbarElement='Dashboard'>
-                <SectionHeading text="Overview"/>
+                <SectionHeading>
+                    Overview
+                </SectionHeading>
                 <SectionRow>
                     <Infopanel>
                         <span className="w-full text-5xl font-light text-slate-700"> 12:25 </span>
