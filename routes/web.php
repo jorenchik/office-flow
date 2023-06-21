@@ -10,13 +10,14 @@ use Inertia\Inertia;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
+| Middleware from the 'web' group is applied automatically.
 |--------------------------------------------------------------------------
 |
 */
 
-Route::group(['middleware' => 'auth'], function () {
+Route::redirect('/', '/dashboard');
 
-    Route::redirect('/', '/dashboard');
+Route::middleware(['protect'])->group(function () {
 
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
@@ -42,7 +43,7 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('logout');
 });
 
-Route::group(['middleware' => 'noauth'], function () {
+Route::middleware(['guest'])->group(function () {
 
     Route::get('/login', function () {
         return Inertia::render('Auth/Login');

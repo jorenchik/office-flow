@@ -16,34 +16,30 @@ class Authenticate extends BaseMiddleware
         $token = $request->cookie('jwt');
 
         if (!$token) {
-            return to_route('login')->withcookies([
-                'jwt' => cookie::forget('jwt')
-            ]);
+            return $next($request);
         }
 
         try {
             $user = JWTAuth::setToken($token)->authenticate();
         } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
-            // Add info about the reasons
-            return to_route('login')->withcookies([
-                'jwt' => cookie::forget('jwt')
-            ]);
+            // TODO: Add info about the reasons
+            Cookie::forget('jwt');
+            return $next($request);
         } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-            // Add info about the reasons
-            return to_route('login')->withcookies([
-                'jwt' => cookie::forget('jwt')
-            ]);
+            // TODO: Add info about the reasons
+            Cookie::forget('jwt');
+            return $next($request);
         } catch (\Exception $e) {
-            return to_route('login')->withcookies([
-                'jwt' => cookie::forget('jwt')
-            ])->withErrors('Internal server error, try logging in again');
+            // TODO: Add info about the reasons
+            Cookie::forget('jwt');
+            return $next($request);
         }
         
         if (!$user) {
             return back()->withErrors(['email' => 'Provided credentials are not correct or user not found']);
         }
         
-        // User as shared data
+        // User is authenticated
         auth()->setUser($user);
 
         return $next($request);
