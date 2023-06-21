@@ -1,40 +1,40 @@
 
-import HeaderLink from '@/Components/HeaderLink'
-import ApplicationLogo from './ApplicationLogo'
 import { makeClasses } from '@/Helpers/classHelper'
+import { Link } from '@inertiajs/react'
 
 
-export default function Navbar({className})
+export default function Navbar({className, activeElement})
 {
 	const classes = makeClasses("flex h-[5rem] mx-[13%]", className);
 
+	const elements = [
+		['Dashboard', route('dashboard')],
+		['Appointments', route('appointments')],
+		['Check Ins', route('checkin')],
+		['Offices', route('offices')],
+		['Reviews', route('reviews')] 
+	];
+
+	let items = []
+	let itemKey = 0 
+
 	return (
 		<div className={classes}> 
-			<a href="#infopanel">
-				<div className="navbar-link navbar-link__active">
-					<span className="m-auto font-bold">Infopanel</span>
-				</div>
-			</a>
-			<a href="#appointments">
-				<div className="navbar-link">
-					<span className="m-auto font-bold">Appointments</span>
-				</div>
-			</a>
-			<a href="#check-ins">
-				<div className="navbar-link">
-					<span className="m-auto font-bold">Check ins</span>
-				</div>
-			</a>
-			<a href="#offices">
-				<div className="navbar-link">
-					<span className="m-auto font-bold">Offices</span>
-				</div>
-			</a>
-			<a href="#reviews">
-				<div className="navbar-link">
-					<span className="m-auto font-bold">Reviews</span>
-				</div>
-			</a>
+			{elements.map((el) => {
+				++itemKey;
+				return (
+				<Link href={el[1]} key={itemKey} method="get" as="button">
+					{ el[0] === activeElement ? 
+					<div className="navbar-link navbar-link__active">
+						<span className="m-auto font-bold">{el[0]}</span>
+					</div>
+					:
+					<div className="navbar-link">
+						<span className="m-auto font-bold">{el[0]}</span>
+					</div>}
+				</Link>
+				)
+			})}
 		</div>
 	)
 }

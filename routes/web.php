@@ -26,6 +26,18 @@ Route::group(['middleware' => 'auth'], function () {
         return Inertia::render('Appointments');
     })->name('appointments');
 
+    Route::get('/checkins', function () {
+        return Inertia::render('CheckIns');
+    })->name('checkin');
+
+    Route::get('/offices', function () {
+        return Inertia::render('Offices');
+    })->name('offices');
+
+    Route::get('/reviews', function () {
+        return Inertia::render('Reviews');
+    })->name('reviews');
+
     Route::post('logout', [AuthController::class, 'logout'])
         ->name('logout');
 });
