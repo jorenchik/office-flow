@@ -21,6 +21,7 @@ use Illuminate\Database\Seeder;
 use Faker\Factory;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -187,10 +188,24 @@ class DatabaseSeeder extends Seeder
             }
         }
 
+        $userRole = Role::create(['name' => 'user']);
+        $employeeRole = Role::create(['name' => 'employee']);
+        $adminRole = Role::create(['name' => 'admin']);
+
         // Users 
         $users = User::factory()->count(env('USER_SEED_COUNT'))->create();
         $admins = User::factory()->count(env('ADMIN_SEED_COUNT'))->create();
         $employees = User::factory()->count(env('EMPLOYEE_SEED_COUNT'))->create();
+        foreach($users as $user)
+        {
+            $user->assignRole($userRole);
+            $user->save();
+        }
+        foreach($admins as $user)
+        {
+            $user->assignRole($adminRole);
+            $user->save();
+        }
         foreach($employees as $user)
         {
             $department = $faker->randomElement($availableDepartments);
@@ -201,6 +216,7 @@ class DatabaseSeeder extends Seeder
             $userPosition = UserPosition::make();
             $userPosition->user()->associate($user);
             $userPosition->position()->associate($randomAvailablePosition);
+            $user->assignRole($employeeRole);
             $userPosition->save();
         }
 
