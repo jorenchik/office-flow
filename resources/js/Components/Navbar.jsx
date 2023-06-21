@@ -5,7 +5,7 @@ import { Link } from '@inertiajs/react'
 
 export default function Navbar({className, activeElement})
 {
-	const classes = makeClasses("flex h-[5rem] mx-[13%]", className);
+	const classes = makeClasses("flex h-[5rem]", className);
 
 	const elements = [
 		['Dashboard', route('dashboard')],

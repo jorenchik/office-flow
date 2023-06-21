@@ -2,12 +2,12 @@ import Header from "@/Components/Header"
 import Footer from "@/Components/Footer"
 import ContentWrapper from "@/Components/ContentWrapper"
 
-export default function Authenticated({user, children}) {
+export default function Authenticated({ user, children }) {
     return (
         <div>
-            <div className="pb-20 min-h-screen bg-gray-50">
+            <div className="flex flex-col min-h-screen bg-gray-50">
                 <Header user={user} />
-                <ContentWrapper>
+                <ContentWrapper className='flex-grow'>
                     {children}
                 </ContentWrapper>
             </div>

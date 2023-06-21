@@ -1,8 +1,8 @@
 
-export default function ContentWrapper({children, ...props})
+export default function ContentWrapper({children, className, ...props})
 {
 	return (
-		<div className='flex flex-wrap justify-center items-center'>
+		<div className={`flex px-[10%] mb-10 flex-col justify-center items-center ${className}`}>
 			{children}
 		</div>
 	);
