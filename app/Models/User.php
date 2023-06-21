@@ -10,6 +10,9 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\UserPosition;
 use App\Models\Position;
 
+use Spatie\Permission\Traits\HasRoles;
+
+
 /**
  * User model.
  *
@@ -19,7 +22,7 @@ use App\Models\Position;
  */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
