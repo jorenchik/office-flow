@@ -19,7 +19,7 @@ export default function Header({user})
 			<div id="header-logo-container" className='flex items-center my-auto h-full justify-centerplace-content-center'>
 				<ApplicationLogo className="w-[15rem] m-5 shadow-none rounded-xl" />
 			</div>
-			<div id="header-links" className="flex mr-4 auto">
+			<div className="flex mr-4 auto">
 				<div className="flex justify-center items-center p-2 py-1 space-x-10">
 					<HeaderLink href="#about">
 						About
@@ -30,8 +30,11 @@ export default function Header({user})
 					<HeaderLink href="#help">
 						Help
 					</HeaderLink>
-					<HeaderLink className="!text-slate-600" href="#account">
-						Account
+					<HeaderLink href="#account">
+
+						Account (
+							{user.name}
+							)
 					</HeaderLink>
 					<form onSubmit={submit}>
 						<HeaderLink className='!text-gray-700' isButton={true} type='submit'>
