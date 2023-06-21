@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -12,18 +14,35 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::group(['middleware' => 'auth'], function () {
 
-Route::get('/login', function () {
-    return Inertia::render('Auth/Login');
+    Route::redirect('/', '/dashboard');
+
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
+
+    Route::get('/appointments', function () {
+        return Inertia::render('Appointments');
+    })->name('appointments');
+
+    Route::post('logout', [AuthController::class, 'logout'])
+        ->name('logout');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+Route::group(['middleware' => 'noauth'], function () {
 
-require __DIR__.'/auth.php';
+    Route::get('/login', function () {
+        return Inertia::render('Auth/Login');
+    })->name('login');
+
+    Route::get('/register', function () {
+        return Inertia::render('Auth/Register');
+    })->name('register');
+
+    Route::post('login', [AuthController::class, 'login'])
+        ->name('user.login');
+
+    Route::post('register', [RegisteredUserController::class, 'store'])
+        ->name('user.register');
+});

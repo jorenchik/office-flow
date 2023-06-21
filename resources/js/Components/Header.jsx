@@ -1,10 +1,19 @@
 
 import HeaderLink from '@/Components/HeaderLink'
 import ApplicationLogo from './ApplicationLogo'
+import { useForm } from '@inertiajs/react';
 
 
-export default function Header()
+export default function Header({user})
 {
+
+	const { post} = useForm();
+
+    const submit = (e) => {
+        e.preventDefault();
+        post(route('logout'));
+    };
+
 	return (
 		<div className='w-full flex justify-between px-[13%] bg-slate-100 overflow-hidden clear-fix'>
 			<div id="header-logo-container" className='flex items-center my-auto h-full justify-centerplace-content-center'>
@@ -24,6 +33,11 @@ export default function Header()
 					<HeaderLink className="!text-slate-600" href="#account">
 						Account
 					</HeaderLink>
+					<form onSubmit={submit}>
+						<HeaderLink className='!text-gray-700' isButton={true} type='submit'>
+							Logout
+						</HeaderLink>
+					</form>
 				</div>
 			</div>
 		</div>
