@@ -1,6 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import SectionHeading from '@/Components/SectionHeading';
 import ContentFrame from '@/Layouts/ContentFrame';
+import Pagination from '@/Components/Pagination';
 import { Table, Thead, TableRow, TableCell, TableButtonCell } from '@/Components/Table';
 
 
@@ -11,7 +12,7 @@ export default function Appointments({ auth }) {
 
                 <SectionHeading children={'Appointments'} />
 
-                <Table>
+                <Table className='flex-grow'>
                         <Thead entries={[
                             'Name',
                             'Email',
@@ -45,6 +46,7 @@ export default function Appointments({ auth }) {
 
                 </Table>
 
+                <Pagination />
             </ContentFrame>
         </AuthenticatedLayout>
     );
