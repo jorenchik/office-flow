@@ -1,7 +1,7 @@
 
-import HeaderLink from '@/Components/HeaderLink'
+import { HeaderLink } from './Links';
 import ApplicationLogo from './ApplicationLogo'
-import { useForm } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 
 
 export default function Header({user, className})
@@ -17,24 +17,23 @@ export default function Header({user, className})
 	return (
 		<div className='w-full flex justify-between px-[13%] bg-slate-100'>
 			<div className='flex items-center my-auto h-full justify-centerplace-content-center'>
-				<ApplicationLogo className="w-[15rem] m-5 rounded-xl" />
+				<Link href={route('dashboard')}>
+					<ApplicationLogo className="w-[15rem] m-5 rounded-xl" />
+				</Link>
 			</div>
 			<div className="flex mr-4 auto">
 				<div className="flex justify-center items-center p-2 py-1 space-x-10">
-					<HeaderLink href="#about">
+					<HeaderLink href={route('about')}>
 						About
 					</HeaderLink>
-					<HeaderLink href="#contacts">
+					<HeaderLink href={route('contacts')}>
 						Contacts
 					</HeaderLink>
-					<HeaderLink href="#help">
+					<HeaderLink href={route('help')}>
 						Help
 					</HeaderLink>
-					<HeaderLink href="#account">
-
-						Account (
-							{user.name}
-							)
+					<HeaderLink href={route('account')}>
+						Account ({user.name})
 					</HeaderLink>
 					<form onSubmit={submit}>
 						<HeaderLink className='!text-gray-700' isButton={true} type='submit'>
