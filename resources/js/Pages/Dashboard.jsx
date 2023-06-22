@@ -5,10 +5,12 @@ import SectionHeading from '@/Components/SectionHeading';
 import VLine from '@/Components/VLine';
 import SectionRow from '@/Components/SectionRow';
 import ContentFrame from '@/Layouts/ContentFrame';
+import Navbar from '@/Components/Navbar';
 
 export default function Dashboard({ auth }) {
     return (
         <AuthenticatedLayout user={auth.user}>
+            <Navbar activeElement='Dashboard' className='mt-14' />
             <ContentFrame activeNavbarElement='Dashboard'>
                 <SectionHeading>
                     Overview

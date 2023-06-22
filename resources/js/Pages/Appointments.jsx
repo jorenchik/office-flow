@@ -2,12 +2,14 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import SectionHeading from '@/Components/SectionHeading';
 import ContentFrame from '@/Layouts/ContentFrame';
 import Pagination from '@/Components/Pagination';
+import Navbar from '@/Components/Navbar';
 import { Table, Thead, TableRow, TableCell, TableButtonCell } from '@/Components/Table';
 
 
 export default function Appointments({ auth }) {
     return (
         <AuthenticatedLayout user={auth.user}>
+            <Navbar activeElement='Appointments' className='mt-14' />
             <ContentFrame activeNavbarElement="Appointments">
 
                 <SectionHeading children={'Appointments'} />
