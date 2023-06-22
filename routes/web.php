@@ -19,6 +19,22 @@ Route::redirect('/', '/dashboard');
 
 Route::middleware(['protect'])->group(function () {
 
+    Route::get('/about', function () {
+        return Inertia::render('About');
+    })->name('about');
+
+    Route::get('/contacts', function () {
+        return Inertia::render('Contacts');
+    })->name('contacts');
+
+    Route::get('/help', function () {
+        return Inertia::render('Help');
+    })->name('help');
+
+    Route::get('/account', function () {
+        return Inertia::render('Account');
+    })->name('account');
+
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
