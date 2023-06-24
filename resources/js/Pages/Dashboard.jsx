@@ -1,11 +1,11 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import Indicator from "@/Components/Indicator";
-import Infopanel from "@/Components/Infopanel";
-import SectionHeading from "@/Components/SectionHeading";
-import VLine from "@/Components/VLine";
-import SectionRow from "@/Components/SectionRow";
+import Indicator from "@/Components/Info/Indicator";
+import Infopanel from "@/Components/Info/Infopanel";
+import SectionHeading from "@/Components/Typography/SectionHeading";
+import VLine from "@/Components/PageStructure/VerticalLine";
+import SectionRow from "@/Components/PageStructure/SectionRow";
 import ContentFrame from "@/Layouts/ContentFrame";
-import Navbar from "@/Components/Navbar";
+import Navbar from "@/Components/Navigation/Navbar";
 
 export default function Dashboard({ auth }) {
     return (

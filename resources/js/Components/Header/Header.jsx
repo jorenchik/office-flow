@@ -1,5 +1,5 @@
-import { HeaderLink } from "./Links";
-import ApplicationLogo from "./ApplicationLogo";
+import { HeaderLink } from "../Links/HeaderLink";
+import ApplicationLogo from "../Logo/ApplicationLogo";
 import { Link, useForm } from "@inertiajs/react";
 
 export default function Header({ user, className }) {

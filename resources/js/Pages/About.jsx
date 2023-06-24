@@ -1,6 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import ContentFrame from "@/Layouts/ContentFrame";
-import SectionHeading from "@/Components/SectionHeading";
+import SectionHeading from "@/Components/Typography/SectionHeading";
 
 export default function About({ auth }) {
     return (

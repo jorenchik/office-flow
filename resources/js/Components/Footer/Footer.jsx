@@ -1,6 +1,6 @@
-import ApplicationLogo from "./ApplicationLogo";
+import ApplicationLogo from "../Logo/ApplicationLogo";
 import { makeClasses } from "@/Helpers/classHelper";
-import { FooterLink } from "./Links";
+import { FooterLink } from "../Links/FooterLink";
 import { useForm } from "@inertiajs/react";
 
 export default function Footer({ className }) {

@@ -1,6 +1,6 @@
-import Header from "@/Components/Header";
-import Footer from "@/Components/Footer";
-import ContentWrapper from "@/Components/ContentWrapper";
+import Header from "@/Components/Header/Header";
+import Footer from "@/Components/Footer/Footer";
+import ContentWrapper from "@/Layouts/ContentWrapper";
 
 export default function Authenticated({ user, children }) {
     return (

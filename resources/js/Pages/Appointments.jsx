@@ -1,19 +1,19 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import SectionHeading from "@/Components/SectionHeading";
+import SectionHeading from "@/Components/Typography/SectionHeading";
 import ContentFrame from "@/Layouts/ContentFrame";
-import Pagination from "@/Components/Pagination";
-import Navbar from "@/Components/Navbar";
-import { FilterContextProvider } from "@/Components/FilterContext";
+import Pagination from "@/Components/Pagination/Pagination";
+import Navbar from "@/Components/Navigation/Navbar";
+import { FilterContextProvider } from "@/Components/Table/FilterContext";
 import {
     Table,
-    Thead,
+    TableHead,
     TableRow,
     TableCell,
     TableButtonCell,
-    TableFilters,
-} from "@/Components/Table";
-import SectionRow from "@/Components/SectionRow";
-import { SortContextProvider } from "@/Components/SortContext";
+} from "@/Components/Table/Table";
+import SectionRow from "@/Components/PageStructure/SectionRow";
+import { SortContextProvider } from "@/Components/Table/SortContext";
+import { TableFilters } from "@/Components/Table/TableFilters";
 
 export default function Appointments({ sortEntries, sort, filters, auth }) {
     return (
@@ -34,7 +34,7 @@ export default function Appointments({ sortEntries, sort, filters, auth }) {
                         </SectionRow>
                         
                         <Table className="flex-grow">
-                            <Thead
+                            <TableHead
                                 entries={[
                                     "Name",
                                     "Email",

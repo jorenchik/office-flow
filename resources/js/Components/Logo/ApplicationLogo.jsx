@@ -1,4 +1,4 @@
-import logo from "../../img/logo.png";
+import logo from "../../../img/logo.png";
 
 export default function ApplicationLogo({ className, ...props }) {
     const logoSrc = logo;

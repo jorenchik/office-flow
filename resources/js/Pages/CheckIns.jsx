@@ -1,7 +1,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import SectionHeading from "@/Components/SectionHeading";
+import SectionHeading from "@/Components/Typography/SectionHeading";
 import ContentFrame from "@/Layouts/ContentFrame";
-import Navbar from "@/Components/Navbar";
+import Navbar from "@/Components/Navigation/Navbar";
 
 export default function CheckIns({ auth }) {
     return (
