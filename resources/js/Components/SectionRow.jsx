@@ -1,8 +1,8 @@
 
-export default function SectionRow({children, ...props})
+export default function SectionRow({children, className ,...props})
 {
 	return (
-		<div className="flex mt-20 justify-around h-[14rem] w-full">
+		<div className={`flex justify-around w-full ${className}`}>
 			{children}
 		</div>
 	);
