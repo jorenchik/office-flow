@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,8 +40,60 @@ Route::middleware(['protect'])->group(function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::get('/appointments', function () {
-        return Inertia::render('Appointments');
+    Route::get('/appointments', function (Request $request) {
+
+        // Logic for conroller START
+        $filters = [
+            'time' => [
+                'options' => ['all', 'past', 'future'],
+                'choice' => 'all'
+            ],
+            'place' => [
+                'options' => ['all', '1stbranch', '2ndbranch'],
+                'choice' => 'all'
+                ]
+        ];
+
+        // Place cannot be sorted in this instance 
+        $sortEntries = ['name', 'email', 'date', 'time'];
+        $choices = $request->validate([
+            'time' => '',
+            'place' => '',
+            'sortAttribute' => '',
+            // '' is representative of no sort
+            'sortOrder' => 'in:,asc,desc'
+        ]);
+
+        $sort = null;
+        if(array_key_exists('sortAttribute', $choices) && array_key_exists('sortOrder', $choices))
+        {
+            $sort = [
+                'attribute' => $choices['sortAttribute'],
+                'order' => $choices['sortOrder']
+            ];
+        } else
+        {
+            $sort = [
+                'attribute' => '', 
+                'order' => ''
+            ];
+        }
+
+        foreach($filters as $attribute => $filter)
+        {
+            if(array_key_exists($attribute, $choices))
+            {
+                $filters[$attribute]['choice'] = $choices[$attribute];
+            }
+        }
+
+        return Inertia::render('Appointments', [
+            'filters' => $filters,
+            'sort' => $sort,
+            'sortEntries' => $sortEntries 
+        ]);
+        // Logic for conroller END
+
     })->name('appointments');
 
     Route::get('/checkins', function () {
