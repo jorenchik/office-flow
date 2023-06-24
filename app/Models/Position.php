@@ -11,7 +11,7 @@ class Position extends Model
     use HasFactory;
 
     protected $fillable = [
-        'department_id',        
+        'department_id',
     ];
 
     protected $hidden = [

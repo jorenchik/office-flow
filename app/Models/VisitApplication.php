@@ -9,7 +9,7 @@ class VisitApplication extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'purpose',  
+        'purpose',
         'starting_at',
         'ending_at',
         'status_id',
@@ -31,7 +31,7 @@ class VisitApplication extends Model
 
     public function employee()
     {
-        return $this->belongsTo(User::class, 'employee_id'); 
+        return $this->belongsTo(User::class, 'employee_id');
     }
 
     public function visitor()

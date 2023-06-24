@@ -1,12 +1,15 @@
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import { Link } from '@inertiajs/react';
+import ApplicationLogo from "@/Components/ApplicationLogo";
+import { Link } from "@inertiajs/react";
 
 export default function Guest({ children }) {
     return (
         <div className="flex flex-col items-center pt-6 min-h-screen bg-gray-100 sm:justify-center sm:pt-0">
             <div>
-                <Link href="/" className='flex justify-center place-items-center'>
-                    <ApplicationLogo className="w-[80%] rounded-xl"/>
+                <Link
+                    href="/"
+                    className="flex justify-center place-items-center"
+                >
+                    <ApplicationLogo className="w-[80%] rounded-xl" />
                 </Link>
             </div>
 

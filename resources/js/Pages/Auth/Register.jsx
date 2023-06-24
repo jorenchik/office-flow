@@ -1,30 +1,30 @@
-import { useEffect } from 'react';
-import GuestLayout from '@/Layouts/GuestLayout';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { useEffect } from "react";
+import GuestLayout from "@/Layouts/GuestLayout";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import PrimaryButton from "@/Components/PrimaryButton";
+import TextInput from "@/Components/TextInput";
+import { Head, Link, useForm } from "@inertiajs/react";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
-        name: '',
-        last_name: '',
-		email: '',
-        phone_number: '',
-        password: '',
-        password_confirmation: '',
+        name: "",
+        last_name: "",
+        email: "",
+        phone_number: "",
+        password: "",
+        password_confirmation: "",
     });
 
     useEffect(() => {
         return () => {
-            reset('password', 'password_confirmation');
+            reset("password", "password_confirmation");
         };
     }, []);
 
     const submit = (e) => {
         e.preventDefault();
-        post(route('user.register'));
+        post(route("user.register"));
     };
 
     return (
@@ -42,7 +42,7 @@ export default function Register() {
                         className="block mt-1 w-full"
                         autoComplete="name"
                         isFocused={true}
-                        onChange={(e) => setData('name', e.target.value)}
+                        onChange={(e) => setData("name", e.target.value)}
                         required
                     />
 
@@ -59,7 +59,7 @@ export default function Register() {
                         className="block mt-1 w-full"
                         autoComplete="last_name"
                         isFocused={true}
-                        onChange={(e) => setData('last_name', e.target.value)}
+                        onChange={(e) => setData("last_name", e.target.value)}
                         required
                     />
 
@@ -76,7 +76,7 @@ export default function Register() {
                         value={data.email}
                         className="block mt-1 w-full"
                         autoComplete="username"
-                        onChange={(e) => setData('email', e.target.value)}
+                        onChange={(e) => setData("email", e.target.value)}
                         required
                     />
 
@@ -93,11 +93,16 @@ export default function Register() {
                         className="block mt-1 w-full"
                         autoComplete="phone_number"
                         isFocused={true}
-                        onChange={(e) => setData('phone_number', e.target.value)}
+                        onChange={(e) =>
+                            setData("phone_number", e.target.value)
+                        }
                         required
                     />
 
-                    <InputError message={errors.phone_number} className="mt-2" />
+                    <InputError
+                        message={errors.phone_number}
+                        className="mt-2"
+                    />
                 </div>
 
                 <div className="mt-4">
@@ -110,7 +115,7 @@ export default function Register() {
                         value={data.password}
                         className="block mt-1 w-full"
                         autoComplete="new-password"
-                        onChange={(e) => setData('password', e.target.value)}
+                        onChange={(e) => setData("password", e.target.value)}
                         required
                     />
 
@@ -118,7 +123,10 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
+                    <InputLabel
+                        htmlFor="password_confirmation"
+                        value="Confirm Password"
+                    />
 
                     <TextInput
                         id="password_confirmation"
@@ -127,16 +135,21 @@ export default function Register() {
                         value={data.password_confirmation}
                         className="block mt-1 w-full"
                         autoComplete="new-password"
-                        onChange={(e) => setData('password_confirmation', e.target.value)}
+                        onChange={(e) =>
+                            setData("password_confirmation", e.target.value)
+                        }
                         required
                     />
 
-                    <InputError message={errors.password_confirmation} className="mt-2" />
+                    <InputError
+                        message={errors.password_confirmation}
+                        className="mt-2"
+                    />
                 </div>
 
                 <div className="flex justify-end items-center mt-4">
                     <Link
-                        href={route('login')}
+                        href={route("login")}
                         className="text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                         Already registered?

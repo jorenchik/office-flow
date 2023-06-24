@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
             'on_hold',
             'draft',
             'faulty'
-        ];       
+        ];
 
         // Department job positions
         $jobPositions = [
@@ -115,8 +115,7 @@ class DatabaseSeeder extends Seeder
         // Departments
         $departmentNames = array_keys($jobPositions);
         $departments = [];
-        for($i = 0; $i < 4; ++$i)
-        {
+        for ($i = 0; $i < 4; ++$i) {
             $department = Department::create([
                 'name' => $departmentNames[$i],
             ]);
@@ -126,65 +125,57 @@ class DatabaseSeeder extends Seeder
 
         $floorCount = 4;
         $usedDepartments = [];
-        for($i = 0; $i < $floorCount; ++$i)
-        {
+        for ($i = 0; $i < $floorCount; ++$i) {
             $officeCount = $faker->numberBetween(3, 6);
-            for($k = 0; $k < $officeCount; ++$k)
-            {
+            for ($k = 0; $k < $officeCount; ++$k) {
                 $office = Office::make([
-                    'id' => ($i+1) * 100 + $k,
+                    'id' => ($i + 1) * 100 + $k,
                     'presenting_ability' => $faker->boolean(),
                     'employee_using_possibility' => $faker->boolean(),
                 ]);
                 $department = $departments[$i];
-                $office->department()->associate($department);;
-                if(!in_array($department,$usedDepartments))
-                {
+                $office->department()->associate($department);
+                ;
+                if (!in_array($department, $usedDepartments)) {
                     $usedDepartments[] = $department;
                 }
 
                 // Workplaces
                 $workplaces = [];
                 $workplaceCount = $faker->numberBetween(8, 12);
-                for($l = 0; $l < $workplaceCount; ++$l)
-                {
+                for ($l = 0; $l < $workplaceCount; ++$l) {
                     $workplace = Workplace::make([
                         'id' => $l + 1,
                     ]);
                     $workplace->office()->associate($office);
                     $workplaces[] = $workplace;
                 }
-                
+
                 $office->workplace_count = count($workplaces);
-                $office->capacity = $office->workplace_count + $faker->numberBetween(0,4);
+                $office->capacity = $office->workplace_count + $faker->numberBetween(0, 4);
                 $office->save();
-                foreach($workplaces as $workplace)
-                {
+                foreach ($workplaces as $workplace) {
                     $workplace->save();
                 }
-            }  
+            }
         }
 
         // Department job positions
         $availableDepartments = [];
-        foreach($jobPositions as $departmentName => $jobPositionNames)
-        {
+        foreach ($jobPositions as $departmentName => $jobPositionNames) {
             $departments = Department::where('name', $departmentName)->get();
-            if(count($departments) >= 1)
-            {
-                foreach($jobPositionNames as $jobPositionName)
-                {
+            if (count($departments) >= 1) {
+                foreach ($jobPositionNames as $jobPositionName) {
                     $jobPosition = Position::make([
                         'name' => $jobPositionName
                     ]);
                     $department = $departments[0];
                     $jobPosition->department()->associate($department);
-                    if(!in_array($department, $availableDepartments))
-                    {
+                    if (!in_array($department, $availableDepartments)) {
                         $availableDepartments[] = $department;
                     }
-                    $jobPosition->save(); 
-                } 
+                    $jobPosition->save();
+                }
             }
         }
 
@@ -196,22 +187,19 @@ class DatabaseSeeder extends Seeder
         $users = User::factory()->count(env('USER_SEED_COUNT'))->create();
         $admins = User::factory()->count(env('ADMIN_SEED_COUNT'))->create();
         $employees = User::factory()->count(env('EMPLOYEE_SEED_COUNT'))->create();
-        foreach($users as $user)
-        {
+        foreach ($users as $user) {
             $user->assignRole($userRole);
             $user->save();
         }
-        foreach($admins as $user)
-        {
+        foreach ($admins as $user) {
             $user->assignRole($adminRole);
             $user->save();
         }
-        foreach($employees as $user)
-        {
+        foreach ($employees as $user) {
             $department = $faker->randomElement($availableDepartments);
             $user->department()->associate($department);
             $positionsAvailable = $department->positions()->get();
-            $randomAvailablePosition = $faker->randomElement($positionsAvailable);               
+            $randomAvailablePosition = $faker->randomElement($positionsAvailable);
             $user->save();
             $userPosition = UserPosition::make();
             $userPosition->user()->associate($user);
@@ -221,48 +209,42 @@ class DatabaseSeeder extends Seeder
         }
 
         // Head of department 
-        foreach($usedDepartments as $department)
-        {
+        foreach ($usedDepartments as $department) {
             $head = $faker->randomElement($users);
             $department->head()->associate($head);
             $department->save();
         }
 
         // Check in / out
-        $checkInOutTypeNames = [ 
-                'Start',
-                'End',
-                'Start from break',
-                'End for a break',
-                'End due to health condition',
-                'End on instruction',
-                'Faulty'
+        $checkInOutTypeNames = [
+            'Start',
+            'End',
+            'Start from break',
+            'End for a break',
+            'End due to health condition',
+            'End on instruction',
+            'Faulty'
         ];
 
-        foreach($checkInOutTypeNames as $key => $typeName)
-        {
+        foreach ($checkInOutTypeNames as $key => $typeName) {
             CheckInOutType::create([
-                'id' =>  $key+1,
+                'id' => $key + 1,
                 'name' => $typeName,
             ]);
         }
 
         $checkInOutTimeStart = 7;
         $checkInOutTimeEnd = 20;
-        foreach($employees as $user)
-        {
+        foreach ($employees as $user) {
 
-            for($i = 0; $i < 3; ++$i)
-            {
-                for($k = 0; $k < 5; ++$k)
-                {
+            for ($i = 0; $i < 3; ++$i) {
+                for ($k = 0; $k < 5; ++$k) {
                     // Randomize the check in/out days
-                    if($faker->boolean(75))
-                    {
+                    if ($faker->boolean(75)) {
                         $randomStartingAt = $this->genarateRandomWeekdayDatetime($faker, $i, $k, $checkInOutTimeStart, $checkInOutTimeEnd, Carbon::minValue());
                         $checkOutTimeStart = intval($randomStartingAt->format('H'));
                         $randomEndingAt = $this->genarateRandomWeekdayDatetime($faker, $i, $k, $checkOutTimeStart, $checkInOutTimeEnd, $randomStartingAt);
-                        
+
                         $userDepartmentOffices = $user->department()->get()->first()->offices()->get();
                         $office = $userDepartmentOffices->random();
                         $workplaces = $office->workplaces()->get();
@@ -274,30 +256,26 @@ class DatabaseSeeder extends Seeder
                         $checkIn->workplace()->associate($workplace);
                         $checkIn->user()->associate($user);
                         $checkIn->save();
+                    }
                 }
-              }
             }
         }
-        
-        
+
+
         // Available times
         $availableTimeStartHours = 8;
         $availableTimeEndHours = 19;
-        foreach($employees as $user)
-        {
+        foreach ($employees as $user) {
             // TODO: Add employee logic
-            for($i = 0; $i < 3; ++$i)
-            {
-                for($k = 0; $k < 5; ++$k)
-                {
+            for ($i = 0; $i < 3; ++$i) {
+                for ($k = 0; $k < 5; ++$k) {
                     // Randomize the available time days
-                    if($faker->boolean())
-                    {
+                    if ($faker->boolean()) {
                         $randomStartingAt = $this->genarateRandomWeekdayDatetime($faker, $i, $k, $availableTimeStartHours, $availableTimeEndHours, Carbon::minValue());
                         $endingHoursStart = intval($randomStartingAt->format('H'));
                         $randomEndingAt = $this->genarateRandomWeekdayDatetime($faker, $i, $k, $endingHoursStart, $availableTimeEndHours, $randomStartingAt);
 
-                        $availableTime  = AvailableTime::make([
+                        $availableTime = AvailableTime::make([
                             'starting_at' => $randomStartingAt->format('Y-m-d H:i:s'),
                             'ending_at' => $randomEndingAt->format('Y-m-d H:i:s'),
                         ]);
@@ -309,7 +287,7 @@ class DatabaseSeeder extends Seeder
         }
 
 
-        $appointmentPurposes = [ 
+        $appointmentPurposes = [
             "Project Discussion",
             "Software Installation",
             "Network Setup and Troubleshooting",
@@ -371,30 +349,26 @@ class DatabaseSeeder extends Seeder
         );
 
         $visitApplicationStatuses = [];
-        foreach($statuses as $status)
-        {
+        foreach ($statuses as $status) {
             $visitApplicationStatuses[] = VisitApplicationStatus::create([
                 'name' => $status
             ]);
         }
 
-        foreach($employees as $employee)
-        {
+        foreach ($employees as $employee) {
             $availableTimes = $employee->availableTimes()->get();
-            foreach($availableTimes as $availableTime)
-            {   
+            foreach ($availableTimes as $availableTime) {
                 // 35% chance that an appointment will be on a particular available time period
-                if($faker->boolean(35))
-                {
-                    $start = Carbon::createFromFormat('Y-m-d H:i:s', $availableTime->starting_at)->addMinutes($faker->numberBetween(30,120));
-                    $end = $start->copy()->addMinutes($faker->numberBetween(60,90));
+                if ($faker->boolean(35)) {
+                    $start = Carbon::createFromFormat('Y-m-d H:i:s', $availableTime->starting_at)->addMinutes($faker->numberBetween(30, 120));
+                    $end = $start->copy()->addMinutes($faker->numberBetween(60, 90));
                     $purpose = $faker->randomElement($appointmentPurposes);
                     $visitApplication = VisitApplication::make([
                         'starting_at' => $start->format('Y-m-d H:i:s'),
                         'ending_at' => $end->format('Y-m-d H:i:s'),
                         'purpose' => $purpose
                     ]);
-                    
+
                     $status = $faker->randomElement($visitApplicationStatuses);
                     $visitApplication->status()->associate($status);
 
@@ -402,9 +376,8 @@ class DatabaseSeeder extends Seeder
                     $visitApplication->visitor()->associate($visitor);
                     $visitApplication->employee()->associate($employee);
                     $visitApplication->save();
-                    if($faker->boolean(60))
-                    {
-                        $grade = $faker->numberBetween(1,5);
+                    if ($faker->boolean(60)) {
+                        $grade = $faker->numberBetween(1, 5);
                         $reviewText = $faker->randomElement($reviewTexts[$grade]);
                         $visitReview = VisitReview::make([
                             'text' => $reviewText,
@@ -436,15 +409,14 @@ class DatabaseSeeder extends Seeder
         $date->addDays($dayOffset);
         $startDate = $date->copy()->addHours($startingHours);
         $endDate = $date->copy()->addHours($endingHours);
-        
+
         $randomDatetime = $faker->dateTimeBetween($startDate, $endDate);
         $minute = intval($randomDatetime->format('i'));
         $minute = floor($minute / 15) * 15;
         $randomDatetime->setTime($randomDatetime->format('H'), $minute, 0);
-     
-        $randomDatetime = Carbon::createFromFormat('Y-m-d H:i:s', $randomDatetime->format('Y-m-d H:i:s')); 
-        if($randomDatetime >= $minDatetime)
-        {
+
+        $randomDatetime = Carbon::createFromFormat('Y-m-d H:i:s', $randomDatetime->format('Y-m-d H:i:s'));
+        if ($randomDatetime >= $minDatetime) {
             $randomDatetime->addHours(1);
         }
         return $randomDatetime;

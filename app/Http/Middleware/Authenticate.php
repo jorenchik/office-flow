@@ -34,11 +34,11 @@ class Authenticate extends BaseMiddleware
             Cookie::forget('jwt');
             return $next($request);
         }
-        
+
         if (!$user) {
             return back()->withErrors(['email' => 'Provided credentials are not correct or user not found']);
         }
-        
+
         // User is authenticated
         auth()->setUser($user);
 

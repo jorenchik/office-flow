@@ -21,5 +21,5 @@ class CheckInOutType extends Model
     public function checkInsOuts()
     {
         return $this->hasMany(CheckInOut::class);
-    } 
+    }
 }

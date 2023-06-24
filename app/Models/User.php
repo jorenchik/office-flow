@@ -88,7 +88,7 @@ class User extends Authenticatable implements JWTSubject
     public function availableTimes()
     {
         return $this->hasMany(AvailableTime::class);
-    } 
+    }
     public function userPosition()
     {
         return $this->hasOne(UserPosition::class);

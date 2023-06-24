@@ -12,7 +12,7 @@ class VisitReview extends Model
     protected $fillable = [
         'text',
         'rating',
-        'visit_application_id'       
+        'visit_application_id'
     ];
 
     protected $hidden = [

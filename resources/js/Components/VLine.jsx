@@ -1,6 +1,3 @@
-export default function VLine({...props})
-{
-	return (
-		<div className="w-px h-full bg-gray-300"></div>
-	);
+export default function VLine({ ...props }) {
+    return <div className="w-px h-full bg-gray-300"></div>;
 }

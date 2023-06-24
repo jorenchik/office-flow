@@ -10,7 +10,7 @@ class Workplace extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name'        
+        'name'
     ];
 
     protected $hidden = [

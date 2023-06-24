@@ -10,7 +10,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
-     /**
+    /**
      * Create a new AuthController instance.
      *
      * @return void
@@ -28,17 +28,15 @@ class AuthController extends Controller
         ]);
 
         if (!$token = auth()->attempt($credentials)) {
-            return back()->withErrors([ 
+            return back()->withErrors([
                 'email' => 'Credentials are incorrect or user does not exist'
             ]);
-        }  
+        }
 
-        if($request['remember'])
-        {
-            $jwtCookie = Cookie::make('jwt',$token, 5000);
-        } else 
-        {
-            $jwtCookie = Cookie::make('jwt',$token);
+        if ($request['remember']) {
+            $jwtCookie = Cookie::make('jwt', $token, 5000);
+        } else {
+            $jwtCookie = Cookie::make('jwt', $token);
         }
 
         $user = Auth::user();

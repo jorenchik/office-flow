@@ -51,7 +51,7 @@ Route::middleware(['protect'])->group(function () {
             'place' => [
                 'options' => ['all', '1stbranch', '2ndbranch'],
                 'choice' => 'all'
-                ]
+            ]
         ];
 
         // Place cannot be sorted in this instance 
@@ -65,24 +65,20 @@ Route::middleware(['protect'])->group(function () {
         ]);
 
         $sort = null;
-        if(array_key_exists('sortAttribute', $choices) && array_key_exists('sortOrder', $choices))
-        {
+        if (array_key_exists('sortAttribute', $choices) && array_key_exists('sortOrder', $choices)) {
             $sort = [
                 'attribute' => $choices['sortAttribute'],
                 'order' => $choices['sortOrder']
             ];
-        } else
-        {
+        } else {
             $sort = [
-                'attribute' => '', 
+                'attribute' => '',
                 'order' => ''
             ];
         }
 
-        foreach($filters as $attribute => $filter)
-        {
-            if(array_key_exists($attribute, $choices))
-            {
+        foreach ($filters as $attribute => $filter) {
+            if (array_key_exists($attribute, $choices)) {
                 $filters[$attribute]['choice'] = $choices[$attribute];
             }
         }
@@ -90,7 +86,7 @@ Route::middleware(['protect'])->group(function () {
         return Inertia::render('Appointments', [
             'filters' => $filters,
             'sort' => $sort,
-            'sortEntries' => $sortEntries 
+            'sortEntries' => $sortEntries
         ]);
         // Logic for conroller END
 

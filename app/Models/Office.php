@@ -10,7 +10,7 @@ class Office extends Model
     use HasFactory;
 
     protected $fillable = [
-        'presenting_ability',        
+        'presenting_ability',
         'capacity',
         'employee_using_possibility',
         'workplace_count',
