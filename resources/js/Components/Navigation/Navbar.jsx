@@ -8,18 +8,19 @@ export default function Navbar({ className, activeElement }) {
     const localeEntries = useLocaleEntries();
     const classes = makeClasses("flex h-[5rem]", className);
     let elements;
-    
+
     function setElements() {
         elements = [
-        [localeEntries['dashboard'], route("dashboard")],
-        [localeEntries['appointments'], route("appointments")],
-        [localeEntries['checkIns'], route("checkin")],
-        [localeEntries['offices'], route("offices")],
-        [localeEntries['reviews'], route("reviews")]];
+            [localeEntries["dashboard"], route("dashboard")],
+            [localeEntries["appointments"], route("appointments")],
+            [localeEntries["checkIns"], route("checkin")],
+            [localeEntries["offices"], route("offices")],
+            [localeEntries["reviews"], route("reviews")],
+        ];
     }
 
     setElements();
-    
+
     let items = [];
     let itemKey = 0;
 

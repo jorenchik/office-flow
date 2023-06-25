@@ -1,24 +1,31 @@
-import { useEffect } from "react";
+import {useEffect} from "react";
 import GuestLayout from "@/Layouts/GuestLayout";
 import InputError from "@/Components/Errors/InputError";
 import InputLabel from "@/Components/Form/InputLabel";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import TextInput from "@/Components/Form/TextInput";
-import { Head, Link, useForm } from "@inertiajs/react";
-import { LocaleContextProvider } from "@/Components/Locale/LocaleContext";
+import {Head, Link, useForm} from "@inertiajs/react";
+import {LocaleContextProvider} from "@/Components/Locale/LocaleContext";
 
 export default function Register({locale, localeEntries}) {
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const {
+        data,
+        setData,
+        post,
+        processing,
+        errors,
+        reset
+    } = useForm({
         name: "",
         last_name: "",
         email: "",
         phone_number: "",
         password: "",
-        password_confirmation: "",
+        password_confirmation: ""
     });
 
     useEffect(() => {
-        return () => {
+        return() => {
             reset("password", "password_confirmation");
         };
     }, []);
@@ -29,140 +36,171 @@ export default function Register({locale, localeEntries}) {
     };
 
     return (
-        <LocaleContextProvider initialLocale={locale} initialLocaleEntries={localeEntries} >
-        <GuestLayout locale={locale} localeEntries={localeEntries}>
-            <Head title="Register" />
+        <LocaleContextProvider initialLocale={locale}
+            initialLocaleEntries={localeEntries}>
+            <GuestLayout locale={locale}
+                localeEntries={localeEntries}>
+                <Head title="Register"/>
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="name" value={localeEntries['name']} />
+                <form onSubmit={submit}>
+                    <div>
+                        <InputLabel htmlFor="name"
+                            value={
+                                localeEntries['name']
+                            }/>
 
-                    <TextInput
-                        id="name"
-                        name="name"
-                        value={data.name}
-                        className="block mt-1 w-full"
-                        autoComplete="name"
-                        isFocused={true}
-                        onChange={(e) => setData("name", e.target.value)}
-                        required
-                    />
+                        <TextInput id="name" name="name"
+                            value={
+                                data.name
+                            }
+                            className="block mt-1 w-full"
+                            autoComplete="name"
+                            isFocused={true}
+                            onChange={
+                                (e) => setData("name", e.target.value)
+                            }
+                            required/>
 
-                    <InputError message={errors.name} className="mt-2" />
-                </div>
+                        <InputError message={
+                                errors.name
+                            }
+                            className="mt-2"/>
+                    </div>
 
-                <div>
-                    <InputLabel htmlFor="last_name" value={localeEntries['surname']} />
+                    <div>
+                        <InputLabel htmlFor="last_name"
+                            value={
+                                localeEntries['surname']
+                            }/>
 
-                    <TextInput
-                        id="last_name"
-                        name="last_name"
-                        value={data.last_name}
-                        className="block mt-1 w-full"
-                        autoComplete="last_name"
-                        isFocused={true}
-                        onChange={(e) => setData("last_name", e.target.value)}
-                        required
-                    />
+                        <TextInput id="last_name" name="last_name"
+                            value={
+                                data.last_name
+                            }
+                            className="block mt-1 w-full"
+                            autoComplete="last_name"
+                            isFocused={true}
+                            onChange={
+                                (e) => setData("last_name", e.target.value)
+                            }
+                            required/>
 
-                    <InputError message={errors.last_name} className="mt-2" />
-                </div>
+                        <InputError message={
+                                errors.last_name
+                            }
+                            className="mt-2"/>
+                    </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="email" value={localeEntries['email']} />
+                    <div className="mt-4">
+                        <InputLabel htmlFor="email"
+                            value={
+                                localeEntries['email']
+                            }/>
 
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="block mt-1 w-full"
-                        autoComplete="username"
-                        onChange={(e) => setData("email", e.target.value)}
-                        required
-                    />
+                        <TextInput id="email" type="email" name="email"
+                            value={
+                                data.email
+                            }
+                            className="block mt-1 w-full"
+                            autoComplete="username"
+                            onChange={
+                                (e) => setData("email", e.target.value)
+                            }
+                            required/>
 
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
+                        <InputError message={
+                                errors.email
+                            }
+                            className="mt-2"/>
+                    </div>
 
-                <div>
-                    <InputLabel htmlFor="phone_number" value={localeEntries['phoneNumber']} />
+                    <div>
+                        <InputLabel htmlFor="phone_number"
+                            value={
+                                localeEntries['phoneNumber']
+                            }/>
 
-                    <TextInput
-                        id="phone_number"
-                        name="phone_number"
-                        value={data.phone_number}
-                        className="block mt-1 w-full"
-                        autoComplete="phone_number"
-                        isFocused={true}
-                        onChange={(e) =>
-                            setData("phone_number", e.target.value)
-                        }
-                        required
-                    />
+                        <TextInput id="phone_number" name="phone_number"
+                            value={
+                                data.phone_number
+                            }
+                            className="block mt-1 w-full"
+                            autoComplete="phone_number"
+                            isFocused={true}
+                            onChange={
+                                (e) => setData("phone_number", e.target.value)
+                            }
+                            required/>
 
-                    <InputError
-                        message={errors.phone_number}
-                        className="mt-2"
-                    />
-                </div>
+                        <InputError message={
+                                errors.phone_number
+                            }
+                            className="mt-2"/>
+                    </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value={localeEntries['password']} />
+                    <div className="mt-4">
+                        <InputLabel htmlFor="password"
+                            value={
+                                localeEntries['password']
+                            }/>
 
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="block mt-1 w-full"
-                        autoComplete="new-password"
-                        onChange={(e) => setData("password", e.target.value)}
-                        required
-                    />
+                        <TextInput id="password" type="password" name="password"
+                            value={
+                                data.password
+                            }
+                            className="block mt-1 w-full"
+                            autoComplete="new-password"
+                            onChange={
+                                (e) => setData("password", e.target.value)
+                            }
+                            required/>
 
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
+                        <InputError message={
+                                errors.password
+                            }
+                            className="mt-2"/>
+                    </div>
 
-                <div className="mt-4">
-                    <InputLabel
-                        htmlFor="password_confirmation"
-                        value={localeEntries['confirmPassword']}
-                    />
+                    <div className="mt-4">
+                        <InputLabel htmlFor="password_confirmation"
+                            value={
+                                localeEntries['confirmPassword']
+                            }/>
 
-                    <TextInput
-                        id="password_confirmation"
-                        type="password"
-                        name="password_confirmation"
-                        value={data.password_confirmation}
-                        className="block mt-1 w-full"
-                        autoComplete="new-password"
-                        onChange={(e) =>
-                            setData("password_confirmation", e.target.value)
-                        }
-                        required
-                    />
+                        <TextInput id="password_confirmation" type="password" name="password_confirmation"
+                            value={
+                                data.password_confirmation
+                            }
+                            className="block mt-1 w-full"
+                            autoComplete="new-password"
+                            onChange={
+                                (e) => setData("password_confirmation", e.target.value)
+                            }
+                            required/>
 
-                    <InputError
-                        message={errors.password_confirmation}
-                        className="mt-2"
-                    />
-                </div>
+                        <InputError message={
+                                errors.password_confirmation
+                            }
+                            className="mt-2"/>
+                    </div>
 
-                <div className="flex justify-end items-center mt-4">
-                    <Link
-                        href={route("login")}
-                        className="text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                        {localeEntries['alreadyRegistered']}
-                    </Link>
+                    <div className="flex justify-end items-center mt-4">
+                        <Link href={
+                                route("login")
+                            }
+                            className="text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            {
+                            localeEntries['alreadyRegistered']
+                        } </Link>
 
-                    <PrimaryButton className="ml-4" disabled={processing}>
-                        {localeEntries['register']}
-                    </PrimaryButton>
-                </div>
-            </form>
-        </GuestLayout>
+                        <PrimaryButton className="ml-4"
+                            disabled={processing}>
+                            {
+                            localeEntries['register']
+                        } </PrimaryButton>
+                    </div>
+                </form>
+            </GuestLayout>
         </LocaleContextProvider>
     );
 }

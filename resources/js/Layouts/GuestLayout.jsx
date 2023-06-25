@@ -1,11 +1,11 @@
-import { useLocaleEntriesUpdate, useLocaleUpdate } from "@/Components/Locale/LocaleContext";
+import {useLocaleEntriesUpdate, useLocaleUpdate} from "@/Components/Locale/LocaleContext";
 import ApplicationLogo from "@/Components/Logo/ApplicationLogo";
-import { Link } from "@inertiajs/react";
-import { useEffect } from "react";
+import {Link} from "@inertiajs/react";
+import {useEffect} from "react";
 import Dropdown from "@/Components/Header/Dropdown";
-import { LanguagePicker } from "@/Components/Locale/LanguagePicker";
+import {LanguagePicker} from "@/Components/Locale/LanguagePicker";
 
-export default function Guest({ locale, localeEntries, children }) {
+export default function Guest({locale, localeEntries, children}) {
     const setLocaleEntries = useLocaleEntriesUpdate();
     const setLocale = useLocaleUpdate();
 
@@ -17,11 +17,8 @@ export default function Guest({ locale, localeEntries, children }) {
     return (
         <div className="flex flex-col items-center pt-6 min-h-screen bg-gray-100 sm:justify-center sm:pt-0">
             <div>
-                <Link
-                    href="/"
-                    className="flex justify-center place-items-center"
-                >
-                    <ApplicationLogo className="w-[80%] rounded-xl" />
+                <Link href="/" className="flex justify-center place-items-center">
+                    <ApplicationLogo className="w-[80%] rounded-xl"/>
                 </Link>
             </div>
 

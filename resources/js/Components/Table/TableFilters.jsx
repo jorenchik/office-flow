@@ -1,16 +1,15 @@
-import { useState } from "react";
-import { router } from "@inertiajs/react";
-import { useSort, useSortUpdate } from "./SortContext";
-import { useFilters, useFilterUpdate } from "./FilterContext";
-import { useEffect } from "react";
-import { Link } from "@inertiajs/react";
-import { useLocaleEntries } from "../Locale/LocaleContext";
+import {useState} from "react";
+import {router} from "@inertiajs/react";
+import {useSort, useSortUpdate} from "./SortContext";
+import {useFilters, useFilterUpdate} from "./FilterContext";
+import {useEffect} from "react";
+import {Link} from "@inertiajs/react";
+import {useLocaleEntries} from "../Locale/LocaleContext";
 import _ from "lodash";
 
 function getNewFilterRequest(filters) {
     let chosenFilterOptions = {};
-    Object.entries(filters).forEach(([key, value]) => {
-        // To avoid redundant 'all' filters in the request parameters
+    Object.entries(filters).forEach(([key, value]) => { // To avoid redundant 'all' filters in the request parameters
         if (value["choice"] != "all") {
             chosenFilterOptions[key] = value["choice"];
         }
@@ -21,19 +20,20 @@ function getNewFilterRequest(filters) {
 
 function getNewSortRequest(sort) {
     if (sort["attribute"] != "" && sort["order"] != "") {
-        return {
-            ["sortAttribute"]: sort["attribute"],
-            ["sortOrder"]: sort["order"],
-        };
+        return {["sortAttribute"]: sort["attribute"], ["sortOrder"]: sort["order"]};
     } else {
         return {};
     }
 }
 
-export function TableFilters({ route, attributes, ...props }) {
+export function TableFilters({
+    route,
+    attributes,
+    ...props
+}) {
     const [isMounted, setIsMounted] = useState(false);
     const [isInitialValuesSet, setIsInitialValuesSet] = useState(false);
-    
+
     const localeEntries = useLocaleEntries();
     const newSort = useSort();
     const [setSort, clearSort] = useSortUpdate();
@@ -45,7 +45,8 @@ export function TableFilters({ route, attributes, ...props }) {
         setIsMounted(true);
     }, []);
 
-    let currentSort, currentFilters;
+    let currentSort,
+        currentFilters;
     useEffect(() => {
         if (isMounted) {
             currentSort = _.cloneDeep(newSort);
@@ -64,39 +65,49 @@ export function TableFilters({ route, attributes, ...props }) {
     }
 
     useEffect(() => {
-        if (
-            !isInitialValuesSet ||
-            (_.isEqual(newFilters, currentFilters) &&
-                _.isEqual(newSort, currentSort))
-        ) {
+        if (!isInitialValuesSet || (_.isEqual(newFilters, currentFilters) && _.isEqual(newSort, currentSort))) {
             return;
         }
         const newFilterRequest = getNewFilterRequest(newFilters);
         const newSortRequest = getNewSortRequest(newSort);
 
-        router.get(route, { ...newFilterRequest, ...newSortRequest });
+        router.get(route, {
+            ... newFilterRequest,
+            ... newSortRequest
+        });
     }, [newFilters, newSort]);
 
     return (
         <div className="flex justify-center items-center space-x-10 text-xl">
-            {Object.entries(attributes).map(([key, value]) => {
+            {
+            Object.entries(attributes).map(([key, value]) => {
                 return (
-                    <Choice
-                        title={localeEntries[key]}
+                    <Choice title={
+                            localeEntries[key]
+                        }
                         key={key}
                         attribute={key}
-                        options={value["options"]}
-                        pickedOption={value["choice"]}
-                    />
+                        options={
+                            value["options"]
+                        }
+                        pickedOption={
+                            value["choice"]
+                        }/>
                 );
-            })}
+            })
+        }
 
-            <Link onClick={handleClearFilters}>{localeEntries['clearFilters']}</Link>
-            <Link onClick={handleClearSort}>{localeEntries['clearSort']}</Link>
+            <Link onClick={handleClearFilters}>
+                {
+                localeEntries["clearFilters"]
+            } </Link>
+            <Link onClick={handleClearSort}>
+                {
+                localeEntries["clearSort"]
+            }</Link>
         </div>
     );
 }
-
 
 export function Choice({
     title,
@@ -121,24 +132,26 @@ export function Choice({
 
     return (
         <div className="flex items-center space-x-5">
-            <div className="text-2xl">{title}:</div>
+            <div className="text-2xl">
+                {title}:</div>
 
             <div>
-                <select
-                    onChange={handleChange}
+                <select onChange={handleChange}
                     defaultValue={pickedOption}
                     className="flex items-center py-1 pl-6 w-32 h-10 text-xl rounded-lg"
                     name="time"
-                    id=""
-                >
-                    {options.map(function (el) {
+                    id="">
+                    {
+                    options.map(function (el) {
                         return (
-                            <option value={el} key={el}>
-                                {localeEntries[el]}
-                            </option>
+                            <option value={el}
+                                key={el}>
+                                {
+                                localeEntries[el]
+                            } </option>
                         );
-                    })}
-                </select>
+                    })
+                } </select>
             </div>
         </div>
     );

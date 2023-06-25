@@ -1,4 +1,4 @@
-import { useContext, createContext, useState } from "react";
+import {useContext, createContext, useState} from "react";
 import _ from "lodash";
 
 const SortContext = createContext();
@@ -12,7 +12,7 @@ export function useSortUpdate() {
     return useContext(SortUpdateContext);
 }
 
-export function SortContextProvider({ children, initialSort }) {
+export function SortContextProvider({children, initialSort}) {
     const [sort, setSort] = useState(initialSort);
 
     function setSort_(attribute, order) {
@@ -28,9 +28,10 @@ export function SortContextProvider({ children, initialSort }) {
 
     return (
         <SortContext.Provider value={sort}>
-            <SortUpdateContext.Provider value={[setSort_, clearSort]}>
-                {children}
-            </SortUpdateContext.Provider>
+            <SortUpdateContext.Provider value={
+                [setSort_, clearSort]
+            }>
+                {children} </SortUpdateContext.Provider>
         </SortContext.Provider>
     );
 }
