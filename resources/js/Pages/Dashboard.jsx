@@ -17,7 +17,7 @@ export default function Dashboard({locale, localeEntries, auth }) {
                 <SectionHeading>{localeEntries['overview']}</SectionHeading>
                 <div className="flex flex-grow justify-center items-center">
                     <div className="flex flex-wrap">
-                        <SectionRow>
+                        <SectionRow className='mt-14'>
                             <Infopanel>
                                 <span className="w-full text-5xl font-light text-slate-700">
                                     12:25
