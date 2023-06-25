@@ -19,7 +19,7 @@ export default function Header({ user, className }) {
         <div className="w-full flex justify-between px-[13%] bg-slate-100">
             <div className="flex items-center my-auto h-full justify-centerplace-content-center">
                 <Link href={route("dashboard")}>
-                    <ApplicationLogo className="w-[15rem] m-5 rounded-xl" />
+                    <ApplicationLogo className="w-[10rem] m-5 rounded-xl" />
                 </Link>
             </div>
             <div className="flex mr-4 auto">
