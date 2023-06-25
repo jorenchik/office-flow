@@ -4,6 +4,10 @@ import { Transition } from "@headlessui/react";
 
 const DropDownContext = createContext();
 
+export function useDropdown() {
+    return useContext(DropDownContext);
+}
+
 const Dropdown = ({ children }) => {
     const [open, setOpen] = useState(false);
 
@@ -23,7 +27,18 @@ const Trigger = ({ children }) => {
 
     return (
         <>
-            <div onClick={toggleOpen}>{children}</div>
+            <div onClick={toggleOpen} className="flex space-x-3">
+                <div>{children}</div>
+                <div className="relative">
+                    <i
+                        className={`absolute top-1/2 left-1/2 ${
+                            open ? "mt-[0.1rem]" : "mt-[-0.03rem]"
+                        } transform -translate-x-1/2 -translate-y-1/2 fa-solid fa-caret-${
+                            open ? "up" : "down"
+                        }`}
+                    ></i>
+                </div>
+            </div>
 
             {open && (
                 <div

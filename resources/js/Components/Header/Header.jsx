@@ -1,10 +1,15 @@
 import { HeaderLink } from "../Links/HeaderLink";
 import ApplicationLogo from "../Logo/ApplicationLogo";
 import { Link, useForm } from "@inertiajs/react";
+import { LanguagePicker } from "../Locale/LanguagePicker";
+import { ButtonLink } from "../Links/ButtonLink";
+import Dropdown from "./Dropdown";
+import { useLocale, useLocaleEntries } from "../Locale/LocaleContext";
 
 export default function Header({ user, className }) {
     const { post } = useForm();
-
+    const locale = useLocale();
+    const localeEntries = useLocaleEntries();
     const submit = (e) => {
         e.preventDefault();
         post(route("logout"));
@@ -19,20 +24,15 @@ export default function Header({ user, className }) {
             </div>
             <div className="flex mr-4 auto">
                 <div className="flex justify-center items-center p-2 py-1 space-x-10">
-                    <HeaderLink href={route("about")}>About</HeaderLink>
-                    <HeaderLink href={route("contacts")}>Contacts</HeaderLink>
-                    <HeaderLink href={route("help")}>Help</HeaderLink>
-                    <HeaderLink href={route("account")}>
-                        Account ({user.name})
-                    </HeaderLink>
+                    <HeaderLink href={route("about")}> {localeEntries['about']} </HeaderLink>
+                    <HeaderLink href={route("contacts")}> {localeEntries['contacts']} </HeaderLink>
+                    <HeaderLink href={route("help")}> {localeEntries['help']} </HeaderLink>
+                    <HeaderLink href={route("account")}> {localeEntries['account']} </HeaderLink>
+                    <Dropdown>
+                        <LanguagePicker/>
+                    </Dropdown>
                     <form onSubmit={submit}>
-                        <HeaderLink
-                            className="!text-gray-700"
-                            isButton={true}
-                            type="submit"
-                        >
-                            Logout
-                        </HeaderLink>
+                        <ButtonLink>{localeEntries['logout']}</ButtonLink>
                     </form>
                 </div>
             </div>

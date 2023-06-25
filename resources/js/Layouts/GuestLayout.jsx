@@ -1,7 +1,19 @@
+import { useLocaleEntriesUpdate, useLocaleUpdate } from "@/Components/Locale/LocaleContext";
 import ApplicationLogo from "@/Components/Logo/ApplicationLogo";
 import { Link } from "@inertiajs/react";
+import { useEffect } from "react";
+import Dropdown from "@/Components/Header/Dropdown";
+import { LanguagePicker } from "@/Components/Locale/LanguagePicker";
 
-export default function Guest({ children }) {
+export default function Guest({ locale, localeEntries, children }) {
+    const setLocaleEntries = useLocaleEntriesUpdate();
+    const setLocale = useLocaleUpdate();
+
+    useEffect(() => {
+        setLocale(locale);
+        setLocaleEntries(localeEntries);
+    }, [locale]);
+
     return (
         <div className="flex flex-col items-center pt-6 min-h-screen bg-gray-100 sm:justify-center sm:pt-0">
             <div>
@@ -13,8 +25,11 @@ export default function Guest({ children }) {
                 </Link>
             </div>
 
-            <div className="overflow-hidden px-6 py-4 mt-6 w-full bg-white shadow-md sm:max-w-md sm:rounded-lg">
+            <div className="overflow-visible px-6 py-4 mt-6 w-full bg-white shadow-md sm:max-w-lg sm:rounded-xl">
                 {children}
+                <Dropdown>
+                    <LanguagePicker/>
+                </Dropdown>
             </div>
         </div>
     );

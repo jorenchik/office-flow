@@ -2,7 +2,6 @@ import Navbar from "@/Components/Navigation/Navbar";
 
 export default function ContentFrame({
     children,
-    activeNavbarElement,
     className,
     navbarHidden,
 }) {

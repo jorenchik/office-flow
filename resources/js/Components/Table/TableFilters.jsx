@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { router } from "@inertiajs/react";
 import { useSort, useSortUpdate } from "./SortContext";
 import { useFilters, useFilterUpdate } from "./FilterContext";
 import { useEffect } from "react";
 import { Link } from "@inertiajs/react";
+import { useLocaleEntries } from "../Locale/LocaleContext";
 import _ from "lodash";
 
 function getNewFilterRequest(filters) {
@@ -31,7 +33,8 @@ function getNewSortRequest(sort) {
 export function TableFilters({ route, attributes, ...props }) {
     const [isMounted, setIsMounted] = useState(false);
     const [isInitialValuesSet, setIsInitialValuesSet] = useState(false);
-
+    
+    const localeEntries = useLocaleEntries();
     const newSort = useSort();
     const [setSort, clearSort] = useSortUpdate();
 
@@ -79,7 +82,7 @@ export function TableFilters({ route, attributes, ...props }) {
             {Object.entries(attributes).map(([key, value]) => {
                 return (
                     <Choice
-                        title={key}
+                        title={localeEntries[key]}
                         key={key}
                         attribute={key}
                         options={value["options"]}
@@ -88,8 +91,8 @@ export function TableFilters({ route, attributes, ...props }) {
                 );
             })}
 
-            <Link onClick={handleClearFilters}>Clear filters</Link>
-            <Link onClick={handleClearSort}>Clear sort</Link>
+            <Link onClick={handleClearFilters}>{localeEntries['clearFilters']}</Link>
+            <Link onClick={handleClearSort}>{localeEntries['clearSort']}</Link>
         </div>
     );
 }
@@ -106,6 +109,7 @@ export function Choice({
 }) {
     const filters = useFilters();
     const [setFilter, clearFilters] = useFilterUpdate();
+    const localeEntries = useLocaleEntries();
 
     useEffect(() => {
         setFilter(attribute, pickedOption);
@@ -130,7 +134,7 @@ export function Choice({
                     {options.map(function (el) {
                         return (
                             <option value={el} key={el}>
-                                {el}
+                                {localeEntries[el]}
                             </option>
                         );
                     })}

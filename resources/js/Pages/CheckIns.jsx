@@ -2,14 +2,17 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import SectionHeading from "@/Components/Typography/SectionHeading";
 import ContentFrame from "@/Layouts/ContentFrame";
 import Navbar from "@/Components/Navigation/Navbar";
+import { LocaleContextProvider } from "@/Components/Locale/LocaleContext";
 
-export default function CheckIns({ auth }) {
+export default function CheckIns({ localeEntries, locale, auth }) {
     return (
-        <AuthenticatedLayout user={auth.user}>
-            <Navbar activeElement="Check Ins" className="mt-14" />
+        <LocaleContextProvider initialLocale={locale} initialLocaleEntries={localeEntries} >
+        <AuthenticatedLayout localeEntries={localeEntries} locale={locale} user={auth.user}>
+            <Navbar activeElement={localeEntries['checkIns']} className="mt-14" />
             <ContentFrame>
-                <SectionHeading>Check ins</SectionHeading>
+                <SectionHeading>{localeEntries['checkIns']}</SectionHeading>
             </ContentFrame>
         </AuthenticatedLayout>
+        </LocaleContextProvider>
     );
 }

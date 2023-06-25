@@ -1,8 +1,15 @@
 <?php
 
+use App\Http\Controllers\AppointmentsController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CheckinController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\StaticPageController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -20,103 +27,35 @@ Route::redirect('/', '/dashboard');
 
 Route::middleware(['protect'])->group(function () {
 
-    Route::get('/about', function () {
-        return Inertia::render('About');
-    })->name('about');
+    Route::get('/about', [StaticPageController::class, 'about'])->name('about');
 
-    Route::get('/contacts', function () {
-        return Inertia::render('Contacts');
-    })->name('contacts');
+    Route::get('/contacts', [StaticPageController::class, 'contacts'])->name('contacts');
 
-    Route::get('/help', function () {
-        return Inertia::render('Help');
-    })->name('help');
+    Route::get('/help', [StaticPageController::class, 'help'])->name('help');
+    
+    Route::get('/account', [ProfileController::class, 'show'])->name('account');
 
-    Route::get('/account', function () {
-        return Inertia::render('Account');
-    })->name('account');
+    Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
 
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+    Route::get('/appointments', [AppointmentsController::class, 'show'])->name('appointments');
 
-    Route::get('/appointments', function (Request $request) {
 
-        // Logic for conroller START
-        $filters = [
-            'time' => [
-                'options' => ['all', 'past', 'future'],
-                'choice' => 'all'
-            ],
-            'place' => [
-                'options' => ['all', '1stbranch', '2ndbranch'],
-                'choice' => 'all'
-            ]
-        ];
+    Route::get('/checkins', [CheckinController::class, 'show'])->name('checkin');
 
-        // Place cannot be sorted in this instance 
-        $sortEntries = ['name', 'email', 'date', 'time'];
-        $choices = $request->validate([
-            'time' => '',
-            'place' => '',
-            'sortAttribute' => '',
-            // '' is representative of no sort
-            'sortOrder' => 'in:,asc,desc'
-        ]);
+    Route::get('/offices', [OfficeController::class, 'show'])->name('offices');
 
-        $sort = null;
-        if (array_key_exists('sortAttribute', $choices) && array_key_exists('sortOrder', $choices)) {
-            $sort = [
-                'attribute' => $choices['sortAttribute'],
-                'order' => $choices['sortOrder']
-            ];
-        } else {
-            $sort = [
-                'attribute' => '',
-                'order' => ''
-            ];
-        }
+    Route::get('/reviews', [ReviewController::class, 'show'])->name('reviews');
 
-        foreach ($filters as $attribute => $filter) {
-            if (array_key_exists($attribute, $choices)) {
-                $filters[$attribute]['choice'] = $choices[$attribute];
-            }
-        }
-
-        return Inertia::render('Appointments', [
-            'filters' => $filters,
-            'sort' => $sort,
-            'sortEntries' => $sortEntries
-        ]);
-        // Logic for conroller END
-
-    })->name('appointments');
-
-    Route::get('/checkins', function () {
-        return Inertia::render('CheckIns');
-    })->name('checkin');
-
-    Route::get('/offices', function () {
-        return Inertia::render('Offices');
-    })->name('offices');
-
-    Route::get('/reviews', function () {
-        return Inertia::render('Reviews');
-    })->name('reviews');
-
-    Route::post('logout', [AuthController::class, 'logout'])
-        ->name('logout');
+    Route::post('logout', [AuthController::class, 'logout']) ->name('logout');
+    
 });
 
 Route::middleware(['guest'])->group(function () {
 
-    Route::get('/login', function () {
-        return Inertia::render('Auth/Login');
-    })->name('login');
+    Route::get('/login', [RegisteredUserController::class, 'login'])->name('login');
 
-    Route::get('/register', function () {
-        return Inertia::render('Auth/Register');
-    })->name('register');
+
+    Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
 
     Route::post('login', [AuthController::class, 'login'])
         ->name('user.login');
@@ -124,3 +63,5 @@ Route::middleware(['guest'])->group(function () {
     Route::post('register', [RegisteredUserController::class, 'store'])
         ->name('user.register');
 });
+
+Route::post('/setlocale', [LocaleController::class, 'setLocale'])->name('locale.set');

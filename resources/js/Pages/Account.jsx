@@ -1,13 +1,16 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import ContentFrame from "@/Layouts/ContentFrame";
 import SectionHeading from "@/Components/Typography/SectionHeading";
+import { LocaleContextProvider } from "@/Components/Locale/LocaleContext";
 
-export default function Account({ auth }) {
+export default function Account({ locale, localeEntries, auth }) {
     return (
-        <AuthenticatedLayout user={auth.user}>
-            <ContentFrame className="mt-5">
-                <SectionHeading children={"Account"} />
-            </ContentFrame>
-        </AuthenticatedLayout>
+        <LocaleContextProvider initialLocale={locale} initialLocaleEntries={localeEntries} >
+            <AuthenticatedLayout localeEntries={localeEntries} locale={locale} user={auth.user}>
+                <ContentFrame className="mt-5">
+                    <SectionHeading children={localeEntries['account']} />
+                </ContentFrame>
+            </AuthenticatedLayout>
+        </LocaleContextProvider>
     );
 }

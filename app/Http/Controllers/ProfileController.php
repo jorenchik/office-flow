@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class ProfileController extends Controller
+class ProfileController extends BaseController
 {
     /**
      * Display the user's profile form.
@@ -21,6 +21,13 @@ class ProfileController extends Controller
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
+        ]);
+    }
+
+    public function show() {
+        $localeEntries = $this->prepareLocalizationEntries(['navbar', 'languages', 'header']);
+        return Inertia::render('Account', [
+            'localeEntries' => $localeEntries
         ]);
     }
 

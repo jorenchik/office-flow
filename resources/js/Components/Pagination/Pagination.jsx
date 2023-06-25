@@ -1,3 +1,5 @@
+import { useLocaleEntries } from "../Locale/LocaleContext";
+
 function PageLink({ children, className, isActive, href, ...props }) {
     return (
         <a href={href ? href : "#"}>
@@ -12,11 +14,12 @@ function PageLink({ children, className, isActive, href, ...props }) {
 }
 
 export default function Pagination({ children, className, pages, ...props }) {
+    const localeEntries = useLocaleEntries();
     return (
         <div
             className={`flex justify-between items-center px-5 pt-14 text-2xl ${className}`}
         >
-            <div>Showing 5 to 10 of 42.</div>
+            <div>{localeEntries['showing']} 5 {localeEntries['to']} 10 {localeEntries['of']} 42.</div>
             <div className="flex">
                 <PageLink className="rounded-l-md border-x-2" children={"<"} />
                 <PageLink className="border-r-2" children={"1"} />

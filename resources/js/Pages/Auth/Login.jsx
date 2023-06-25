@@ -6,8 +6,9 @@ import InputLabel from "@/Components/Form/InputLabel";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import TextInput from "@/Components/Form/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { LocaleContextProvider } from "@/Components/Locale/LocaleContext";
 
-export default function Login({ status, canResetPassword }) {
+export default function Login({ locale, localeEntries, status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: "",
         password: "",
@@ -25,11 +26,10 @@ export default function Login({ status, canResetPassword }) {
 
         post(route("user.login"));
     };
-
     return (
-        <GuestLayout>
+        <LocaleContextProvider initialLocale={locale} initialLocaleEntries={localeEntries} >
+        <GuestLayout locale={locale} localeEntries={localeEntries}>
             <Head title="Log in" />
-
             {status && (
                 <div className="mb-4 text-sm font-medium text-green-600">
                     {status}
@@ -38,7 +38,7 @@ export default function Login({ status, canResetPassword }) {
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="email" value={localeEntries['email']} />
 
                     <TextInput
                         id="email"
@@ -55,7 +55,7 @@ export default function Login({ status, canResetPassword }) {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel htmlFor="password" value={localeEntries['password']} />
 
                     <TextInput
                         id="password"
@@ -80,33 +80,34 @@ export default function Login({ status, canResetPassword }) {
                             }
                         />
                         <span className="ml-2 text-sm text-gray-600">
-                            Remember me
+                            {localeEntries['rememberMe']}
                         </span>
                     </label>
                 </div>
 
-                <div className="flex justify-end items-center mt-4">
-                    {canResetPassword && (
+                    <div className="flex justify-end items-center mt-4">
+                        {canResetPassword && (
+                            <Link
+                                href={route("password.request")}
+                                className="text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            >
+                                {localeEntries['forgotPassword?']}
+                            </Link>
+                        )}
+
                         <Link
-                            href={route("password.request")}
+                            href={route("register")}
                             className="text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
-                            Forgot your password?
+                            {localeEntries['newHere?']}
                         </Link>
-                    )}
 
-                    <Link
-                        href={route("register")}
-                        className="text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                        New here? Register
-                    </Link>
-
-                    <PrimaryButton className="ml-4" disabled={processing}>
-                        Log in
-                    </PrimaryButton>
-                </div>
-            </form>
+                        <PrimaryButton className="ml-4" disabled={processing}>
+                            Log in
+                        </PrimaryButton>
+                    </div>
+                </form>
         </GuestLayout>
+        </LocaleContextProvider>
     );
 }

@@ -43,27 +43,29 @@ export function TableCell({ children, className, isFirst, ...props }) {
     );
 }
 
-export function TableHead({ sortEntries, entries, children, className, ...props }) {
-    let key = 0;
-
+export function TableHead({
+    sortEntries,
+    entries,
+    children,
+    className,
+    ...props
+}) {
     return (
         <thead
             align="left"
             className="p-10 uppercase bg-slate-200 text-slate-400"
         >
             <tr>
-                {entries.map(function (entry) {
-                    ++key;
+                {Object.entries(entries).map(function ([key, value]) {
                     return (
                         <TableHeader key={key}>
-                            {entry !== "" &&
-                            sortEntries.includes(entry.toLowerCase()) ? (
-                                <TableColumnSortHeader
-                                    entry={entry}
-                                    children={entry}
-                                />
+                            {value !== "" &&
+                            sortEntries.includes(key.toLowerCase()) ? (
+                                <TableColumnSortHeader entry={key}>
+                                    {value}
+                                </TableColumnSortHeader>
                             ) : (
-                                entry
+                                value
                             )}
                         </TableHeader>
                     );

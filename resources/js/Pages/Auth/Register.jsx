@@ -5,8 +5,9 @@ import InputLabel from "@/Components/Form/InputLabel";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import TextInput from "@/Components/Form/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { LocaleContextProvider } from "@/Components/Locale/LocaleContext";
 
-export default function Register() {
+export default function Register({locale, localeEntries}) {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: "",
         last_name: "",
@@ -28,12 +29,13 @@ export default function Register() {
     };
 
     return (
-        <GuestLayout>
+        <LocaleContextProvider initialLocale={locale} initialLocaleEntries={localeEntries} >
+        <GuestLayout locale={locale} localeEntries={localeEntries}>
             <Head title="Register" />
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <InputLabel htmlFor="name" value={localeEntries['name']} />
 
                     <TextInput
                         id="name"
@@ -50,7 +52,7 @@ export default function Register() {
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="last_name" value="LastName" />
+                    <InputLabel htmlFor="last_name" value={localeEntries['surname']} />
 
                     <TextInput
                         id="last_name"
@@ -67,7 +69,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="email" value={localeEntries['email']} />
 
                     <TextInput
                         id="email"
@@ -84,7 +86,7 @@ export default function Register() {
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="phone_number" value="PhoneNumber" />
+                    <InputLabel htmlFor="phone_number" value={localeEntries['phoneNumber']} />
 
                     <TextInput
                         id="phone_number"
@@ -106,7 +108,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel htmlFor="password" value={localeEntries['password']} />
 
                     <TextInput
                         id="password"
@@ -125,7 +127,7 @@ export default function Register() {
                 <div className="mt-4">
                     <InputLabel
                         htmlFor="password_confirmation"
-                        value="Confirm Password"
+                        value={localeEntries['confirmPassword']}
                     />
 
                     <TextInput
@@ -152,14 +154,15 @@ export default function Register() {
                         href={route("login")}
                         className="text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
-                        Already registered?
+                        {localeEntries['alreadyRegistered']}
                     </Link>
 
                     <PrimaryButton className="ml-4" disabled={processing}>
-                        Register
+                        {localeEntries['register']}
                     </PrimaryButton>
                 </div>
             </form>
         </GuestLayout>
+        </LocaleContextProvider>
     );
 }

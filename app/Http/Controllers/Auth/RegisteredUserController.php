@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -14,16 +14,26 @@ use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class RegisteredUserController extends Controller
+class RegisteredUserController extends BaseController
 {
     /**
      * Display the registration view.
      */
     public function create(): Response
     {
-        return Inertia::render('Auth/Register');
+        $localeEntries = $this->prepareLocalizationEntries(['register', 'languages']);
+        return Inertia::render('Auth/Register', [
+            'localeEntries' => $localeEntries
+        ]);
     }
 
+    public function login() {
+        $localeEntries = $this->prepareLocalizationEntries(['languages', 'login']);
+        return Inertia::render('Auth/Login', [
+            'localeEntries' => $localeEntries
+        ]);
+    }
+    
     /**
      * Handle an incoming registration request.
      *
