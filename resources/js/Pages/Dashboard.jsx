@@ -36,32 +36,18 @@ export default function Dashboard({locale, localeEntries, auth }) {
                                 </span>
                             </Infopanel>
                         </SectionRow>
-                        <SectionRow>
-                            <Indicator
-                                number={22}
-                                changePercent={2.6}
-                                text="Appointments in June"
-                            />
-                            <Indicator
-                                number={22}
-                                changePercent={2.6}
-                                text="Hours worked in June"
-                            />
-                            <Indicator
-                                number={22}
-                                changePercent={2.6}
-                                text="Upcoming appointments"
-                            />
-                            <Indicator
-                                number={22}
-                                changePercent={2.6}
-                                text="Days worked in June"
-                            />
-                            <Indicator
-                                number={22}
-                                changePercent={2.6}
-                                text="Days worked in June"
-                            />
+                        <SectionRow className='flex-wrap mt-10 space-x-12'>
+                            {
+                                [1,2,3,4,5].map((el) => {return (
+                                    <Indicator
+                                        key={el}
+                                        number={22}
+                                        className='mt-10'
+                                        changePercent={2.6}
+                                        text="Appointments in June"
+                                    />
+                                )})
+                            }
                         </SectionRow>
                     </div>
                 </div>
