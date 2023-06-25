@@ -143,8 +143,10 @@ export function TableColumnSortHeader({
     return (
         <div>
             <button onClick={handleClick}>
-                {children} &nbsp;
-                {headerTrail}
+                <div className="flex space-x-3">
+                    <div>{children}</div>
+                    <div>{headerTrail}</div>
+                </div>
             </button>
         </div>
     );
