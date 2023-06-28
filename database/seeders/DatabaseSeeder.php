@@ -352,7 +352,7 @@ class DatabaseSeeder extends Seeder
             for ($i = 0; $i < 3; ++$i) {
                 for ($k = 0; $k < 5; ++$k) {
                     // Randomize the available time days
-                    if ($faker->boolean()) {
+                    if ($faker->boolean(70)) {
                         $randomStartingAt = $this->genarateRandomWeekdayDatetime($faker, $i, $k, $availableTimeStartHours, $availableTimeEndHours, Carbon::minValue());
                         $endingHoursStart = intval($randomStartingAt->format('H'));
                         $randomEndingAt = $this->genarateRandomWeekdayDatetime($faker, $i, $k, $endingHoursStart, $availableTimeEndHours, $randomStartingAt);
@@ -441,7 +441,7 @@ class DatabaseSeeder extends Seeder
             $availableTimes = $employee->availableTimes()->get();
             foreach ($availableTimes as $availableTime) {
                 // 35% chance that an appointment will be on a particular available time period
-                if ($faker->boolean(35)) {
+                if ($faker->boolean(45)) {
                     $start = Carbon::createFromFormat('Y-m-d H:i:s', $availableTime->starting_at)->addMinutes($faker->numberBetween(30, 120));
                     $end = $start->copy()->addMinutes($faker->numberBetween(60, 90));
                     $purpose = $faker->randomElement($appointmentPurposes);
