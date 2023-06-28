@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
         // Application statuses
         $statuses = [
             'pending',
-            'in_progress',
+            'accepted',
             'completed',
             'rejected',
             'canceled',
