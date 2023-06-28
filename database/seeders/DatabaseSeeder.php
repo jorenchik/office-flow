@@ -20,7 +20,7 @@ use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Database\Seeder;
 use Faker\Factory;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
@@ -182,6 +182,88 @@ class DatabaseSeeder extends Seeder
         $userRole = Role::create(['name' => 'user']);
         $employeeRole = Role::create(['name' => 'employee']);
         $adminRole = Role::create(['name' => 'admin']);
+
+        // All
+        Permission::create(['name' => 'view my profile']);
+        Permission::create(['name' => 'edit my profile']); 
+        
+       
+
+        // Visitor and employee
+        Permission::create(['name' => 'view my visits']);
+        Permission::create(['name' => 'cancel my visit']);
+
+        // Visitor privileges
+        Permission::create(['name' => 'apply for visit']);
+        Permission::create(['name' => 'create review']);
+        Permission::create(['name' => 'edit review']);
+        Permission::create(['name' => 'delete review']);
+
+        // Employee privileges
+        Permission::create(['name' => 'view dashboard']);
+        Permission::create(['name' => 'view offices']);
+        Permission::create(['name' => 'view check ins']);
+        Permission::create(['name' => 'check in']);
+        Permission::create(['name' => 'cancel visit']);
+        Permission::create(['name' => 'delete check in']);
+        Permission::create(['name' => 'confirm visit']);
+
+        // Admin privileges
+		Permission::create(['name' => 'view all visits']);
+        Permission::create(['name' => 'view all offices']);
+        Permission::create(['name' => 'view all check ins']);
+        Permission::create(['name' => 'view all profiles']);
+        Permission::create(['name' => 'view all reviews']);
+		Permission::create(['name' => 'edit all visits']);
+        Permission::create(['name' => 'edit all offices']);
+        Permission::create(['name' => 'edit all check ins']);
+        Permission::create(['name' => 'edit all profiles']);
+        Permission::create(['name' => 'edit all reviews']);
+		Permission::create(['name' => 'delete all visits']);
+        Permission::create(['name' => 'delete all offices']);
+        Permission::create(['name' => 'delete all check ins']);
+        Permission::create(['name' => 'delete all profiles']);
+        Permission::create(['name' => 'delete all reviews']);
+        
+        $userRole->givePermissionTo('view my profile');
+        $userRole->givePermissionTo('edit my profile');
+        $userRole->givePermissionTo('view my visits');
+        $userRole->givePermissionTo('cancel my visit');
+        $userRole->givePermissionTo('apply for visit');
+        $userRole->givePermissionTo('create review');
+        $userRole->givePermissionTo('edit review');
+        $userRole->givePermissionTo('delete review');
+
+
+        $adminRole->givePermissionTo('view my profile');
+        $adminRole->givePermissionTo('edit my profile');
+        $adminRole->givePermissionTo('edit my profile');
+        $adminRole->givePermissionTo('view all visits');
+        $adminRole->givePermissionTo('view all offices');
+        $adminRole->givePermissionTo('view all check ins');
+        $adminRole->givePermissionTo('view all profiles');
+        $adminRole->givePermissionTo('view all reviews');
+        $adminRole->givePermissionTo('edit all visits');
+        $adminRole->givePermissionTo('edit all offices');
+        $adminRole->givePermissionTo('edit all check ins');
+        $adminRole->givePermissionTo('edit all profiles');
+        $adminRole->givePermissionTo('edit all reviews');
+        $adminRole->givePermissionTo('delete all visits');
+        $adminRole->givePermissionTo('delete all offices');
+        $adminRole->givePermissionTo('delete all check ins');
+        $adminRole->givePermissionTo('delete all profiles');
+        $adminRole->givePermissionTo('delete all reviews');
+
+        $employeeRole->givePermissionTo('view my profile');
+        $employeeRole->givePermissionTo('edit my profile');
+        $employeeRole->givePermissionTo('view my visits');
+        $employeeRole->givePermissionTo('view dashboard');
+        $employeeRole->givePermissionTo('view offices');
+        $employeeRole->givePermissionTo('view check ins');
+        $employeeRole->givePermissionTo('check in');
+        $employeeRole->givePermissionTo('cancel my visit');
+        $employeeRole->givePermissionTo('delete check in');
+        $employeeRole->givePermissionTo('confirm visit');
 
         // Users 
         $users = User::factory()->count(env('USER_SEED_COUNT'))->create();
