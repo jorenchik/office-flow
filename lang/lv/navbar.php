@@ -1,13 +1,14 @@
 <?php
-
 declare(strict_types=1);
 
 return [
-	'dashboard' => 'Infopanelis',
-	'appointments' => 'Vizītes',
-	'checkIns' => 'Reģistrācijas',
-	'offices' => 'Ofisi',
-	'reviews' => 'Atsauksmes',
+	"dashboard" => "Infopanelis",
+	"appointments.index" => "Vizītes",
+	"appointments.create" => "Vizītes izveidošana",
+	"appointments.edit" => "Vizītes redigēšana",
+	"appointments.view" => "Vizīte",
+	"checkins.index" => "Reģistrācijas",
+	"reviews.index" => "Atsauksmes",
+	"offices.index" => "Ofisi",
 ];
-
 

@@ -5,6 +5,10 @@ return [
 
 	"clearFilters" => "Clear filters",
 	"clearSort" => "Clear sort",
+	"create" => "Create",
+	"apply" => "Apply",
+	"edit" => "Edit",
+	"delete" => "Delete",
 
 	"view" => "View",
 	"all" => "All"

@@ -5,14 +5,16 @@ declare(strict_types=1);
 return [
 	"name" => 'Name',
 	"email" => 'Email',
-	"place" => 'Place',
+	"phone_number" => 'Phone number',
 	"date" => 'Date',
 	"time" => 'Time',
-
+	"starting_at" => 'Time',
 	"past" => 'Past',
 	"future" => 'Future',
-	"1stbranch" => '1. branch',
-	"2ndbranch" => '2. branch'
+	"place" => 'Place',
+	"createAppointment" => "Create appointment",
+	"editAppointment" => "Edit appointment",
+	"confirmed" => "Confirmed",
 ];
 
 

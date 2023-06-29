@@ -8,5 +8,9 @@ return [
 	'minutes' => 'minūtes',
 	'checkedIn' => 'piereģistrējaties',
 	'at' => '',
-	'in' => 'darbā'
+	'in' => 'darbā',
+	'visitsThisDay' => 'Vizītes nedēļā',
+	'visitsThisWeek' => 'Vizītes mēnesī',
+	'checkInsThisMonth' => 'Reģistrācijas mēnesī',
+	'checkInsThisWeek' => 'Reģistrācijas nedēļā',
 ];
