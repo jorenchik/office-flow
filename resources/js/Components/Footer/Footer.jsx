@@ -29,8 +29,8 @@ export default function Footer({ className }) {
                         <FooterLink href={route("help")}>
                             {localeEntries["help"]}
                         </FooterLink>
-                        <FooterLink href={route("account")}>
-                            {localeEntries["account"]}
+                        <FooterLink href={route("profile.view")}>
+                            {localeEntries["profile"]}
                         </FooterLink>
                     </div>
                     <div className="flex p-2 py-1 my-auto">
