@@ -131,7 +131,7 @@ class DatabaseSeeder extends Seeder
         $usedDepartments = [];
         $officePhotos = Storage::disk('public')->files('seed/images/offices');
         for ($i = 0; $i < $floorCount; ++$i) {
-            $officeCount = $faker->numberBetween(3, 6);
+            $officeCount = $faker->numberBetween(5, 9);
             for ($k = 0; $k < $officeCount; ++$k) {
                 $office = Office::make([
                     'id' => ($i + 1) * 100 + $k,
@@ -293,6 +293,7 @@ class DatabaseSeeder extends Seeder
                 ->toMediaCollection();
             $user->save();
         }
+           
         foreach ($admins as $user) {
             $user->assignRole($adminRole);
             $randomPhotoPath = $faker->randomElement($peoplePhotos);
@@ -301,6 +302,7 @@ class DatabaseSeeder extends Seeder
                 ->toMediaCollection();
             $user->save();
         }
+
         foreach ($employees as $user) {
             $department = $faker->randomElement($availableDepartments);
             $user->department()->associate($department);
@@ -453,7 +455,6 @@ class DatabaseSeeder extends Seeder
         }
 
     }
-
     public function getFirstMondayPastNow()
     {
         $firstMonday = Carbon::now();
