@@ -86,7 +86,6 @@ Route::middleware(['protect'])->group(function () {
 
         Route::put('/offices/update', [OfficeController::class, 'update'])->name('offices.update');
 
-    Route::get('/reviews', [ReviewController::class, 'show'])->name('reviews');
 
     Route::post('logout', [AuthController::class, 'logout']) ->name('logout');
 
