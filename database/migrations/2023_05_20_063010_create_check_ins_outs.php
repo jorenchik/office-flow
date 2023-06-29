@@ -12,14 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('check_in_outs', function (Blueprint $table) {
+            $table->id();
             $table->dateTime('registered_at');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('type_id');
             $table->unsignedBigInteger('workplace_id');
+            $table->unsignedBigInteger('office_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('type_id')->references('id')->on('check_in_out_types');
             $table->foreign('workplace_id')->references('id')->on('workplaces');
-            $table->primary(['registered_at', 'user_id']);
+            $table->foreign('office_id')->references('id')->on('offices');
             $table->timestamps();
         });
     }

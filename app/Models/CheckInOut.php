@@ -27,6 +27,11 @@ class CheckInOut extends Model
         return $this->belongsTo(Workplace::class);
     }
 
+    public function office()
+    {
+        return $this->belongsTo(Office::class);
+    }
+
     public function checkInOutType()
     {
         return $this->belongsTo(CheckInOutType::class);

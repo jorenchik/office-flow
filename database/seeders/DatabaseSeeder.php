@@ -345,59 +345,9 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        $checkInOutTimeStart = 7;
-        $checkInOutTimeEnd = 20;
-        foreach ($employees as $user) {
 
-            for ($i = 0; $i < 3; ++$i) {
-                for ($k = 0; $k < 5; ++$k) {
-                    // Randomize the check in/out days
-                    if ($faker->boolean(75)) {
-                        $randomStartingAt = $this->genarateRandomWeekdayDatetime($faker, $i, $k, $checkInOutTimeStart, $checkInOutTimeEnd, Carbon::minValue());
-                        $checkOutTimeStart = intval($randomStartingAt->format('H'));
-                        $randomEndingAt = $this->genarateRandomWeekdayDatetime($faker, $i, $k, $checkOutTimeStart, $checkInOutTimeEnd, $randomStartingAt);
-
-                        $userDepartmentOffices = $user->department()->get()->first()->offices()->get();
-                        $office = $userDepartmentOffices->random();
-                        $workplaces = $office->workplaces()->get();
-                        $workplace = $workplaces->random();
-                        $checkIn = CheckInOut::make([
-                            'registered_at' => $randomStartingAt,
-                            'type_id' => CheckInOutType::where('name', 'Start')->first()->id,
-                        ]);
-                        $checkIn->workplace()->associate($workplace);
-                        $checkIn->user()->associate($user);
-                        $checkIn->save();
-                    }
-                }
-            }
-        }
-
-
-        // Available times
-        $availableTimeStartHours = 8;
-        $availableTimeEndHours = 19;
-        foreach ($employees as $user) {
-            // TODO: Add employee logic
-            for ($i = 0; $i < 3; ++$i) {
-                for ($k = 0; $k < 5; ++$k) {
-                    // Randomize the available time days
-                    if ($faker->boolean(70)) {
-                        $randomStartingAt = $this->genarateRandomWeekdayDatetime($faker, $i, $k, $availableTimeStartHours, $availableTimeEndHours, Carbon::minValue());
-                        $endingHoursStart = intval($randomStartingAt->format('H'));
-                        $randomEndingAt = $this->genarateRandomWeekdayDatetime($faker, $i, $k, $endingHoursStart, $availableTimeEndHours, $randomStartingAt);
-
-                        $availableTime = AvailableTime::make([
-                            'starting_at' => $randomStartingAt->format('Y-m-d H:i:s'),
-                            'ending_at' => $randomEndingAt->format('Y-m-d H:i:s'),
-                        ]);
-                        $availableTime->user()->associate($user);
-                        $availableTime->save();
-                    }
-                }
-            }
-        }
-
+        $this->createRandomCheckInOutTimes($employees, $faker);
+        $this->createRandomAvailableTimes($employees,$faker);
 
         $appointmentPurposes = [
             "Project Discussion",
@@ -513,24 +463,106 @@ class DatabaseSeeder extends Seeder
         $firstMonday->startOfDay()->setTime(0, 0, 0);
         return $firstMonday;
     }
+    private function generateAndSaveCheckInOut($faker, $user, $workplace, $checkInOutType, $registeredAt)
+    {
+        $checkInOut = CheckInOut::make([
+            'registered_at' => $registeredAt,
+            'type_id' => CheckInOutType::where('name', $checkInOutType)->first()->id,
+        ]);
+        $checkInOut->workplace()->associate($workplace);
+        $checkInOut->office()->associate($workplace->office()->get()->first());
+        $checkInOut->user()->associate($user);
+        $checkInOut->save();
+        return $checkInOut;
+    }
 
-    public function genarateRandomWeekdayDatetime($faker, $weekOffset, $dayOffset, $startingHours, $endingHours, $minDatetime)
+    public function createRandomCheckInOutTimes($employees, $faker, $checkInOutTimeStart = 7, $checkInOutTimeEnd = 20)
+    {
+        foreach ($employees as $user) {
+            $userDepartmentOffices = $user->department()->get()->first()->offices()->get();
+            $office = $userDepartmentOffices->random();
+            $workplaces = $office->workplaces()->get();
+            $workplace = $workplaces->random();
+
+            for ($i = 0; $i < 3; ++$i) {
+                for ($k = 0; $k < 5; ++$k) {
+                    
+                    if ($faker->boolean(75)) {
+                        $randomStartingAt = $this->generateRandomWeekdayDatetime($i, $k, $checkInOutTimeStart, $checkInOutTimeStart+2);
+
+
+                        $checkOutTimeStart = intval($randomStartingAt->format('H'));
+                        $randomEndingAt = $this->generateRandomWeekdayDatetime($i, $k, $checkInOutTimeEnd-3, $checkInOutTimeEnd);
+
+                        $this->generateAndSaveCheckInOut($faker, $user, $workplace, 'Start', $randomStartingAt);
+
+                        if ($faker->boolean(50)) {
+                            $randomLunchBreakStart = $this->generateRandomWeekdayDatetime($i, $k, intval($randomStartingAt->format('H')), intval($randomEndingAt->format('H')));
+
+                            $this->generateAndSaveCheckInOut($faker, $user, $workplace, 'End for a break', $randomLunchBreakStart);
+
+                            $randomLunchBreakEnd = $this->generateRandomWeekdayDatetime($i, $k, intval($randomLunchBreakStart->format('H')), intval($randomLunchBreakStart->format('H')) + 2);
+
+                            if ($randomLunchBreakEnd) {
+                                $this->generateAndSaveCheckInOut($faker, $user, $workplace, 'Start from break', $randomLunchBreakEnd);
+                            }
+                        }
+
+                        // if (!$faker->boolean(25)) {
+                            $this->generateAndSaveCheckInOut($faker, $user, $workplace, 'End', $randomEndingAt);
+                        // }
+                    }
+                }
+            }
+        }
+        $this->deleteFutureCheckIns();
+    }
+
+    private function generateAndSaveAvailableTime($faker, $user, $i, $k, $availableTimeStartHours, $availableTimeEndHours)
+    {
+        if ($faker->boolean(70)) {
+            $randomStartingAt = $this->generateRandomWeekdayDatetime($i, $k, $availableTimeStartHours, $availableTimeEndHours);
+            $endingHoursStart = intval($randomStartingAt->format('H'));
+            $randomEndingAt = $this->generateRandomWeekdayDatetime($i, $k, $endingHoursStart, $availableTimeEndHours);
+
+            $availableTime = AvailableTime::make([
+                'starting_at' => $randomStartingAt->format('Y-m-d H:i:s'),
+                'ending_at' => $randomEndingAt->format('Y-m-d H:i:s'),
+            ]);
+            $availableTime->user()->associate($user);
+            $availableTime->save();
+        }
+    }
+
+    public function createRandomAvailableTimes($employees, $faker, $availableTimeStartHours = 8, $availableTimeEndHours = 19)
+    {
+        foreach ($employees as $user) {
+            for ($i = 0; $i < 3; ++$i) {
+                for ($k = 0; $k < 5; ++$k) {
+                    $this->generateAndSaveAvailableTime($faker, $user, $i, $k, $availableTimeStartHours, $availableTimeEndHours);
+                }
+            }
+        }
+    }
+
+    public function generateRandomWeekdayDatetime($weekOffset, $dayOffset, $startingHours, $endingHours)
     {
         $firstMonday = $this->getFirstMondayPastNow();
-        $date = $firstMonday->copy()->addWeeks($weekOffset);
+        $date = $firstMonday->copy()->addWeeks(-$weekOffset);
         $date->addDays($dayOffset);
         $startDate = $date->copy()->addHours($startingHours);
         $endDate = $date->copy()->addHours($endingHours);
 
-        $randomDatetime = $faker->dateTimeBetween($startDate, $endDate);
+        $randomDatetime = Factory::create()->dateTimeBetween($startDate, $endDate);
         $minute = intval($randomDatetime->format('i'));
         $minute = floor($minute / 15) * 15;
         $randomDatetime->setTime($randomDatetime->format('H'), $minute, 0);
 
-        $randomDatetime = Carbon::createFromFormat('Y-m-d H:i:s', $randomDatetime->format('Y-m-d H:i:s'));
-        if ($randomDatetime >= $minDatetime) {
-            $randomDatetime->addHours(1);
-        }
-        return $randomDatetime;
+        return Carbon::createFromFormat('Y-m-d H:i:s', $randomDatetime->format('Y-m-d H:i:s'));
+    }
+
+    public function deleteFutureCheckIns() 
+    {
+        CheckInOut::where('registered_at', '>', Carbon::now())->delete();
     }
 }
