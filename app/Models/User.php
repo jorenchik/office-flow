@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -86,6 +87,95 @@ class User extends Authenticatable implements JWTSubject, HasMedia
         return $this->getKey();
     }
 
+    public function getTimeAtWork()
+    {
+        $today = Carbon::today();
+        $startWorkTime = CheckInOut::where('user_id', $this->id)
+            ->whereDate('registered_at', $today)
+            ->where('type_id', CheckInOutType::where('name', 'Start')->first()->id)
+            ->first();
+
+        if($startWorkTime)
+        {
+            $endWorkTime = CheckInOut::where('user_id', $this->id)
+                ->whereDate('registered_at', $today)
+                ->where('type_id', CheckInOutType::where('name', 'End')->first()->id)
+                ->latest('registered_at')
+                ->first();
+
+            $endWorkTime = $endWorkTime ? Carbon::createFromFormat('Y-m-d H:i:s', $endWorkTime->registered_at) : Carbon::now();
+
+            $totalBreakTime = $this->getTotalBreakTime($today);
+            return Carbon::createFromFormat('Y-m-d H:i:s', $startWorkTime->registered_at)->diffInRealMinutes($endWorkTime) - $totalBreakTime;
+        }
+
+        return 0;
+    }
+
+
+    private function getTotalBreakTime($day)
+    {
+        $startBreakTimes = CheckInOut::where('user_id', $this->id)
+            ->whereDate('registered_at', $day)
+            ->where('type_id', CheckInOutType::where('name', 'End for a break')->first()->id)
+            ->get();
+
+        $totalBreakTime = 0;
+
+        foreach ($startBreakTimes as $startBreakTime)
+        {
+            $endBreakTime = CheckInOut::where('user_id', $this->id)
+                ->whereDate('registered_at', $day)
+                ->where('type_id', CheckInOutType::where('name', 'Start from break')->first()->id)
+                ->where('registered_at', '>', $startBreakTime->registered_at)
+                ->first();
+
+            $endBreakTime = $endBreakTime ? Carbon::createFromFormat('Y-m-d H:i:s', $endBreakTime->registered_at) : Carbon::now();
+
+            $totalBreakTime += Carbon::createFromFormat('Y-m-d H:i:s', $startBreakTime->registered_at)->diffInRealMinutes($endBreakTime);
+        }
+
+        return $totalBreakTime;
+    }
+
+    public function getLastStartCheckInToday() 
+    {
+        $lastCheckIn = CheckInOut::where('user_id', $this->id)
+            ->where('type_id', 1)
+            ->whereDate('registered_at', Carbon::today())
+            ->orderBy('registered_at', 'desc')
+            ->first();
+        return $lastCheckIn ? $lastCheckIn : null;
+    }
+
+    public function getVisitsInCurrentMonth()
+    {
+        return VisitApplication::where('employee_id', $this->id)
+            ->whereBetween('starting_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
+            ->count();
+    }
+
+    public function getVisitsInCurrentWeek()
+    {
+        return VisitApplication::where('employee_id', $this->id)
+            ->whereBetween('starting_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+            ->count();
+    }
+
+    public function getCheckInsInCurrentMonth()
+    {
+        return CheckInOut::where('user_id', $this->id)
+            ->whereBetween('registered_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
+            ->count();
+    }
+
+    public function getCheckInsInCurrentWeek()
+    {
+        return CheckInOut::where('user_id', $this->id)
+            ->whereBetween('registered_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+            ->count();
+    }
+
     public function getLastCheckIn()
     {
         return CheckInOut::where('user_id', $this->id)
@@ -147,7 +237,7 @@ class User extends Authenticatable implements JWTSubject, HasMedia
 
     public function position()
     {
-        return $this->employeePosition()->position;
+        return $this->userPosition()->get()->first()->position();
     }
 
     public function visitApplications()
