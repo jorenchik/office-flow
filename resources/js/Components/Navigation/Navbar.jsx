@@ -29,20 +29,22 @@ export default function Navbar({ className, activeElement }) {
             {elements.map((el) => {
                 ++itemKey;
                 return (
-                    <Link href={el[1]} key={itemKey} method="get" as="button">
-                        {el[0] === activeElement ? (
-                            <div className="flex w-52 h-full text-xl text-white uppercase bg-cyan-700 border-r-2 transition-all duration-75 border-r-slate-300">
+                    <Link href={
+                            el[1]
+                        }
+                        key={itemKey}
+                        method="get"
+                        as="button"
+                        preserveScroll>
+                        <div className={
+                            `flex w-52 h-full text-xl uppercase  border-r-2 transition-all duration-75 border-r-slate-300 ${
+                                el[0] == activeElement ? 'bg-cyan-700 text-white' : 'text-gray-500 bg-slate-200'
+                            }`
+                        }>
                                 <span className="m-auto font-bold">
                                     {el[0]}
                                 </span>
                             </div>
-                        ) : (
-                            <div className="flex w-52 h-full text-xl text-gray-500 uppercase border-r-2 transition-all duration-75 bg-slate-200 border-r-slate-300">
-                                <span className="m-auto font-bold">
-                                    {el[0]}
-                                </span>
-                            </div>
-                        )}
                     </Link>
                 );
             })}
