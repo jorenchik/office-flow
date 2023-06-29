@@ -10,6 +10,7 @@ use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\StaticPageController;
+use App\Http\Controllers\ErrorController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -47,6 +48,8 @@ Route::middleware(['protect'])->group(function () {
     Route::get('/reviews', [ReviewController::class, 'show'])->name('reviews');
 
     Route::post('logout', [AuthController::class, 'logout']) ->name('logout');
+
+        Route::get('/error/{code}', [ErrorController::class, 'renderError'])->name('error');
     
 });
 
