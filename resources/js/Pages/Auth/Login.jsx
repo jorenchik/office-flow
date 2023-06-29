@@ -126,7 +126,7 @@ export default function Login({locale, localeEntries, status, canResetPassword})
 
                         <PrimaryButton className="ml-4"
                             disabled={processing}>
-                            Log in
+                            {localeEntries['login']}
                         </PrimaryButton>
                     </div>
                 </form>

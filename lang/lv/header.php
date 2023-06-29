@@ -7,5 +7,6 @@ return [
 	'contacts' => 'Kontakti',
 	'help' => 'Palīdzība',
 	'account' => 'Konts',
+	'profile' => 'Profils',
 	'logout' => 'Iziet'
 ];

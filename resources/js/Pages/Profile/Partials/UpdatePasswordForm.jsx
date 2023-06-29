@@ -5,16 +5,18 @@ import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import TextInput from "@/Components/Form/TextInput";
 import { useForm } from "@inertiajs/react";
 import { Transition } from "@headlessui/react";
+import { useLocaleEntries } from "@/Components/Locale/LocaleContext";
 
 export default function UpdatePasswordForm({ className = "" }) {
     const passwordInput = useRef();
     const currentPasswordInput = useRef();
+    const localeEntries = useLocaleEntries();
 
     const {
         data,
         setData,
         errors,
-        put,
+        post,
         reset,
         processing,
         recentlySuccessful,
@@ -27,7 +29,7 @@ export default function UpdatePasswordForm({ className = "" }) {
     const updatePassword = (e) => {
         e.preventDefault();
 
-        put(route("password.update"), {
+        post(route("password.update"), {
             preserveScroll: true,
             onSuccess: () => reset(),
             onError: (errors) => {
@@ -46,14 +48,15 @@ export default function UpdatePasswordForm({ className = "" }) {
 
     return (
         <section className={className}>
+
             <header>
                 <h2 className="text-lg font-medium text-gray-900">
-                    Update Password
+                    {localeEntries['updatePassword']}
                 </h2>
 
                 <p className="mt-1 text-sm text-gray-600">
-                    Ensure your account is using a long, random password to stay
-                    secure.
+                    {localeEntries['updatePasswordDescription']}
+                    
                 </p>
             </header>
 
@@ -122,16 +125,7 @@ export default function UpdatePasswordForm({ className = "" }) {
                 </div>
 
                 <div className="flex gap-4 items-center">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
-
-                    <Transition
-                        show={recentlySuccessful}
-                        enterFrom="opacity-0"
-                        leaveTo="opacity-0"
-                        className="transition ease-in-out"
-                    >
-                        <p className="text-sm text-gray-600">Saved.</p>
-                    </Transition>
+                    <PrimaryButton disabled={processing}>{localeEntries['save']}</PrimaryButton>
                 </div>
             </form>
         </section>

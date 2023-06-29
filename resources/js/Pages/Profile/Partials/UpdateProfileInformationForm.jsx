@@ -4,6 +4,7 @@ import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import TextInput from "@/Components/Form/TextInput";
 import { Link, useForm, usePage } from "@inertiajs/react";
 import { Transition } from "@headlessui/react";
+import { useLocaleEntries } from "@/Components/Locale/LocaleContext";
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -11,28 +12,33 @@ export default function UpdateProfileInformation({
     className = "",
 }) {
     const user = usePage().props.auth.user;
+    const localeEntries = useLocaleEntries();
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } =
+    const { data, setData, post, errors, processing, recentlySuccessful } =
         useForm({
+            id: user.id,
             name: user.name,
+            last_name: user.last_name,
+            phone_number: user.phone_number,
+            work_phone_number: user.work_phone_number,
             email: user.email,
+            image: user.image
         });
 
     const submit = (e) => {
         e.preventDefault();
-
-        patch(route("profile.update"));
+        post(route("profile.update"));
     };
 
     return (
         <section className={className}>
             <header>
                 <h2 className="text-lg font-medium text-gray-900">
-                    Profile Information
-                </h2>
+                    {localeEntries['profileInformation']}
+                                    </h2>
 
                 <p className="mt-1 text-sm text-gray-600">
-                    Update your account's profile information and email address.
+                    {localeEntries['updateProfileDescription']}
                 </p>
             </header>
 
@@ -54,6 +60,50 @@ export default function UpdateProfileInformation({
                 </div>
 
                 <div>
+                    <InputLabel htmlFor="last_name" value="Last Name" />
+
+                    <TextInput
+                        id="last_name"
+                        className="block mt-1 w-full"
+                        value={data.last_name}
+                        onChange={(e) => setData("last_name", e.target.value)}
+                        required
+                        autoComplete="family-name"
+                    />
+
+                    <InputError className="mt-2" message={errors.last_name} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="phone_number" value="Phone Number" />
+
+                    <TextInput
+                        id="phone_number"
+                        className="block mt-1 w-full"
+                        value={data.phone_number}
+                        onChange={(e) => setData("phone_number", e.target.value)}
+                        required
+                        autoComplete="tel"
+                    />
+
+                    <InputError className="mt-2" message={errors.phone_number} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="work_phone_number" value="Work Phone Number" />
+
+                    <TextInput
+                        id="work_phone_number"
+                        className="block mt-1 w-full"
+                        value={data.work_phone_number}
+                        onChange={(e) => setData("work_phone_number", e.target.value)}
+                        autoComplete="tel"
+                    />
+
+                    <InputError className="mt-2" message={errors.work_phone_number} />
+                </div>
+
+                <div>
                     <InputLabel htmlFor="email" value="Email" />
 
                     <TextInput
@@ -68,41 +118,15 @@ export default function UpdateProfileInformation({
 
                     <InputError className="mt-2" message={errors.email} />
                 </div>
-
-                {mustVerifyEmail && user.email_verified_at === null && (
-                    <div>
-                        <p className="mt-2 text-sm text-gray-800">
-                            Your email address is unverified.
-                            <Link
-                                href={route("verification.send")}
-                                method="post"
-                                as="button"
-                                className="text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            >
-                                Click here to re-send the verification email.
-                            </Link>
-                        </p>
-
-                        {status === "verification-link-sent" && (
-                            <div className="mt-2 text-sm font-medium text-green-600">
-                                A new verification link has been sent to your
-                                email address.
-                            </div>
-                        )}
-                    </div>
-                )}
+                <div>
+                        <InputLabel htmlFor="image" value={localeEntries['profilePicture']}/>
+                        <input id="image" className="mt-2" type="file" name="image" 
+                            onChange={e => setData('image', e.target.files[0])} />
+                        <InputError className='mt-2' message={errors['image']} />
+                </div>
 
                 <div className="flex gap-4 items-center">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
-
-                    <Transition
-                        show={recentlySuccessful}
-                        enterFrom="opacity-0"
-                        leaveTo="opacity-0"
-                        className="transition ease-in-out"
-                    >
-                        <p className="text-sm text-gray-600">Saved.</p>
-                    </Transition>
+                    <PrimaryButton disabled={processing}>{localeEntries['save']}</PrimaryButton>
                 </div>
             </form>
         </section>

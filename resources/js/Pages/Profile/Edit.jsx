@@ -1,40 +1,61 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import DeleteUserForm from "./Partials/DeleteUserForm";
 import UpdatePasswordForm from "./Partials/UpdatePasswordForm";
+import UpdateEmailForm from "./Partials/UpdateEmailForm"
 import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm";
-import { Head } from "@inertiajs/react";
+import {InfoModalProvider, PromptModalProvider} from '@/Components/Modal/ModalContext';
+import {LocaleContextProvider} from "@/Components/Locale/LocaleContext";
+import ContentFrame from "@/Layouts/ContentFrame";
+import SectionHeading from "@/Components/Typography/SectionHeading";
+import { Link } from "@inertiajs/react";
+import SecondaryButton from "@/Components/Buttons/SecondaryButton";
+import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 
-export default function Edit({ auth, mustVerifyEmail, status }) {
+export default function Edit({
+    locale,
+    localeEntries,
+    auth,
+    mustVerifyEmail,
+    status
+}) {
     return (
-        <AuthenticatedLayout
-            user={auth.user}
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Profile
-                </h2>
-            }
-        >
-            <Head title="Profile" />
-
-            <div className="py-12">
-                <div className="mx-auto space-y-6 max-w-7xl sm:px-6 lg:px-8">
-                    <div className="p-4 bg-white shadow sm:p-8 sm:rounded-lg">
-                        <UpdateProfileInformationForm
-                            mustVerifyEmail={mustVerifyEmail}
-                            status={status}
-                            className="max-w-xl"
-                        />
-                    </div>
-
-                    <div className="p-4 bg-white shadow sm:p-8 sm:rounded-lg">
-                        <UpdatePasswordForm className="max-w-xl" />
-                    </div>
-
-                    <div className="p-4 bg-white shadow sm:p-8 sm:rounded-lg">
-                        <DeleteUserForm className="max-w-xl" />
-                    </div>
-                </div>
-            </div>
-        </AuthenticatedLayout>
+        <InfoModalProvider>
+            <PromptModalProvider>
+                <LocaleContextProvider initialLocale={locale}
+                    initialLocaleEntries={localeEntries}>
+                    <AuthenticatedLayout user={
+                            auth.user
+                        }
+                        localeEntries={localeEntries}
+                        locale={locale}
+                   >
+                        <ContentFrame>
+                            <SectionHeading children={
+                                localeEntries['editProfile']
+                            }/>
+                            <div className="grid grid-cols-2 py-12">
+                                <div className="p-12">
+                                    <UpdateProfileInformationForm/>
+                                </div>
+                                <div className="flex flex-wrap space-y-12 p-12">
+                                    <UpdatePasswordForm/>
+                                </div>
+                            </div>
+                            <div className='flex justify-end space-x-4'
+                                actions={
+                                    []
+                            }>
+                                <Link href={
+                                    route('profile.view')
+                                }>
+                                    <SecondaryButton>{
+                                        localeEntries['back']
+                                    }</SecondaryButton>
+                                </Link>
+                            </div>
+                        </ContentFrame>
+                    </AuthenticatedLayout>
+                </LocaleContextProvider>
+            </PromptModalProvider>
+        </InfoModalProvider>
     );
 }

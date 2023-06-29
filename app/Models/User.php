@@ -37,6 +37,7 @@ class User extends Authenticatable implements JWTSubject, HasMedia
      * @var array<int, string>
      */
     protected $fillable = [
+        'id',
         'name',
         'last_name',
         'email',

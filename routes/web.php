@@ -28,13 +28,11 @@ Route::redirect('/', '/appointments');
 
 Route::middleware(['protect'])->group(function () {
 
-    Route::get('/about', [StaticPageController::class, 'about'])->name('about');
+        Route::get('/about', [StaticPageController::class, 'about'])->name('about');
 
-    Route::get('/contacts', [StaticPageController::class, 'contacts'])->name('contacts');
+        Route::get('/contacts', [StaticPageController::class, 'contacts'])->name('contacts');
 
-    Route::get('/help', [StaticPageController::class, 'help'])->name('help');
-    
-    Route::get('/account', [ProfileController::class, 'show'])->name('account');
+        Route::get('/help', [StaticPageController::class, 'help'])->name('help');
 
         Route::get('/checkin', [CheckinController::class, 'index'])->name('checkin.index');
 
@@ -52,7 +50,7 @@ Route::middleware(['protect'])->group(function () {
 
         Route::post('/checkin/delete', [CheckinController::class, 'delete'])->name('checkin.delete');
 
-    Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
 
         Route::get('/appointments', [AppointmentsController::class, 'index'])->name('appointments.index');
 
@@ -86,11 +84,17 @@ Route::middleware(['protect'])->group(function () {
 
         Route::put('/offices/update', [OfficeController::class, 'update'])->name('offices.update');
 
-
-    Route::post('logout', [AuthController::class, 'logout']) ->name('logout');
+        Route::post('logout', [AuthController::class, 'logout']) ->name('logout');
 
         Route::get('/error/{code}', [ErrorController::class, 'renderError'])->name('error');
-    
+
+        Route::get('/profile/view', [ProfileController::class, 'view'])->name('profile.view');
+
+        Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+
+        Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+        Route::post('/profile/password/update', [ProfileController::class, 'updatePassword'])->name('password.update');
 });
 
 Route::middleware(['guest'])->group(function () {

@@ -45,10 +45,10 @@ export default function Header({user, className}) {
                         localeEntries['help']
                     } </HeaderLink>
                     <HeaderLink href={
-                        route("account")
+                        route("profile.view")
                     }>
                         {
-                        localeEntries['account']
+                        localeEntries['profile']
                     } </HeaderLink>
                     <Dropdown>
                         <LanguagePicker/>
