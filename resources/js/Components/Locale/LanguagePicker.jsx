@@ -12,7 +12,7 @@ export function LanguagePicker({children}) {
         e.preventDefault();
         toggleOpen();
         const newLocale = e.target.getAttribute("value");
-        router.post(route("locale.set"), {locale: newLocale});
+        router.post(route("locale.set"), {locale: newLocale}, {preserveScroll: true});
     }
 
     return (

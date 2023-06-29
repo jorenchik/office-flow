@@ -13,11 +13,11 @@ export function HeaderLink({className, children, href, isButton}) {
                     {children}
                     {" "} </button>
             ) : (
-                <Link className={classes}
-                    href={href}>
-                    {" "}
-                    {children}
-                    {" "} </Link>
+                <Link 
+                    className={classes}
+                    href={href}
+                    preserveScroll>
+                    {children} </Link>
             )
         } </div>
     );
