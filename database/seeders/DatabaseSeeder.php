@@ -196,12 +196,11 @@ class DatabaseSeeder extends Seeder
         // All
         Permission::create(['name' => 'view my profile']);
         Permission::create(['name' => 'edit my profile']); 
-        
-       
 
         // Visitor and employee
         Permission::create(['name' => 'view my visits']);
         Permission::create(['name' => 'cancel my visit']);
+        Permission::create(['name' => 'view all offices']);
 
         // Visitor privileges
         Permission::create(['name' => 'apply for visit']);
@@ -209,8 +208,10 @@ class DatabaseSeeder extends Seeder
         Permission::create(['name' => 'edit review']);
         Permission::create(['name' => 'delete review']);
 
-        // Employee privileges
+        // Worker privileges
         Permission::create(['name' => 'view dashboard']);
+
+        // Employee privileges
         Permission::create(['name' => 'view offices']);
         Permission::create(['name' => 'view check ins']);
         Permission::create(['name' => 'check in']);
@@ -220,7 +221,6 @@ class DatabaseSeeder extends Seeder
 
         // Admin privileges
 		Permission::create(['name' => 'view all visits']);
-        Permission::create(['name' => 'view all offices']);
         Permission::create(['name' => 'view all check ins']);
         Permission::create(['name' => 'view all profiles']);
         Permission::create(['name' => 'view all reviews']);
@@ -234,6 +234,7 @@ class DatabaseSeeder extends Seeder
         Permission::create(['name' => 'delete all check ins']);
         Permission::create(['name' => 'delete all profiles']);
         Permission::create(['name' => 'delete all reviews']);
+        Permission::create(['name' => 'create offices']);
         
         $userRole->givePermissionTo('view my profile');
         $userRole->givePermissionTo('edit my profile');
@@ -243,8 +244,10 @@ class DatabaseSeeder extends Seeder
         $userRole->givePermissionTo('create review');
         $userRole->givePermissionTo('edit review');
         $userRole->givePermissionTo('delete review');
+        $userRole->givePermissionTo('view all offices');
 
 
+        $employeeRole->givePermissionTo('view dashboard');
         $adminRole->givePermissionTo('view my profile');
         $adminRole->givePermissionTo('edit my profile');
         $adminRole->givePermissionTo('edit my profile');
@@ -263,6 +266,7 @@ class DatabaseSeeder extends Seeder
         $adminRole->givePermissionTo('delete all check ins');
         $adminRole->givePermissionTo('delete all profiles');
         $adminRole->givePermissionTo('delete all reviews');
+        $adminRole->givePermissionTo('create offices');
 
         $employeeRole->givePermissionTo('view my profile');
         $employeeRole->givePermissionTo('edit my profile');
@@ -274,6 +278,7 @@ class DatabaseSeeder extends Seeder
         $employeeRole->givePermissionTo('cancel my visit');
         $employeeRole->givePermissionTo('delete check in');
         $employeeRole->givePermissionTo('confirm visit');
+        $employeeRole->givePermissionTo('view all offices');
 
         // Users 
         $users = User::factory()->count(env('USER_SEED_COUNT'))->create();
