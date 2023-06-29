@@ -2,31 +2,33 @@ import PrimaryButton from "../Buttons/PrimaryButton";
 import _ from "lodash";
 import { useSort, useSortUpdate } from "./SortContext";
 import { useState, useEffect } from "react";
+import {Link} from '@inertiajs/react'
 
 const firstCellTopSpacing = 10;
 
-export function TableButtonCell({
+export function TableButton({
     children,
-    className,
+    className = "",
     href,
+    type,
     isFirst,
     ...props
 }) {
     return (
-        <TableCell
-            className={`flex justify-center items-center w-full ${
-                isFirst ? `pb-5 pt-${firstCellTopSpacing}` : ""} ${className}`}
-        >
-            <a href={href}>
-                <div className="flex justify-center items-center">
-                    <PrimaryButton className="flex justify-center items-center h-full bg-slate-600">
-                        <div className="px-2 py-1 text-xl uppercase">
-                            {children}
-                        </div>
-                    </PrimaryButton>
-                </div>
-            </a>
-        </TableCell>
+        type === 'submit' ?
+            <div className="flex justify-center items-center">
+                <PrimaryButton className={`flex text-base justify-center items-center h-full ${className}`} type={type}>
+                    {children}
+                </PrimaryButton>
+            </div>
+        : 
+        <Link href={href}>
+            <div className="flex justify-center items-center">
+                <PrimaryButton className={`flex text-base justify-center items-center h-full ${className}`}>
+                    {children}
+                </PrimaryButton>
+            </div>
+        </Link>
     );
 }
 
@@ -34,7 +36,7 @@ export function TableCell({ children, className, isFirst, ...props }) {
     return (
         <td>
             <div
-                className={`flex px-5 py-6 text-2xl ${
+                className={`flex px-2 py-4 text-2xl ${
                     isFirst ? `pb-5 pt-${firstCellTopSpacing}` : ""} ${className}`}
             >
                 {children}
@@ -53,14 +55,14 @@ export function TableHead({
     return (
         <thead
             align="left"
-            className="p-10 uppercase bg-slate-200 text-slate-400"
+            className="p-10 bg-slate-200 text-slate-400"
         >
             <tr>
                 {Object.entries(entries).map(function ([key, value]) {
                     return (
                         <TableHeader key={key}>
                             {value !== "" &&
-                            sortEntries.includes(key.toLowerCase()) ? (
+                            sortEntries.includes(key) ? (
                                 <TableColumnSortHeader entry={key}>
                                     {value}
                                 </TableColumnSortHeader>

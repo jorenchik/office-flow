@@ -6,6 +6,7 @@ import {useEffect} from "react";
 import {Link} from "@inertiajs/react";
 import {useLocaleEntries} from "../Locale/LocaleContext";
 import _ from "lodash";
+import Login from "@/Pages/Auth/Login";
 
 function getNewFilterRequest(filters) {
     let chosenFilterOptions = {};
@@ -61,6 +62,7 @@ export function TableFilters({
     }
 
     function handleClearSort(e) {
+        e.preventDefault();
         clearSort();
     }
 
@@ -74,13 +76,14 @@ export function TableFilters({
         router.get(route, {
             ... newFilterRequest,
             ... newSortRequest
+        }, {
+            preserveScroll: true
         });
     }, [newFilters, newSort]);
-
     return (
         <div className="flex justify-center items-center space-x-10 text-xl">
             {
-            Object.entries(attributes).map(([key, value]) => {
+                Object.entries(attributes).map(([key, value]) => {
                 return (
                     <Choice title={
                             localeEntries[key]
@@ -97,10 +100,10 @@ export function TableFilters({
             })
         }
 
-            <Link onClick={handleClearFilters}>
+            {attributes.length > 0 && <Link onClick={handleClearFilters}>
                 {
                 localeEntries["clearFilters"]
-            } </Link>
+            } </Link>}
             <Link onClick={handleClearSort}>
                 {
                 localeEntries["clearSort"]
@@ -112,7 +115,7 @@ export function TableFilters({
 export function Choice({
     title,
     pickedOption,
-    options,
+    options, // Assuming options is now an object {id: name, id: name, ...}
     attribute,
     className,
     children,
@@ -127,14 +130,19 @@ export function Choice({
     }, []);
 
     function handleChange(e) {
-        setFilter(attribute, e.target.value);
+        console.log(e.target.value);
+        if(e.target.value == 0)
+        {
+            setFilter(attribute, 'all');
+        } else {
+            setFilter(attribute, e.target.value);
+        }
     }
 
     return (
         <div className="flex items-center space-x-5">
             <div className="text-2xl">
                 {title}:</div>
-
             <div>
                 <select onChange={handleChange}
                     defaultValue={pickedOption}
@@ -142,12 +150,12 @@ export function Choice({
                     name="time"
                     id="">
                     {
-                    options.map(function (el) {
+                    Object.entries(options).map(function ([id, name]) {
                         return (
-                            <option value={el}
-                                key={el}>
+                            <option value={id}
+                                key={id}>
                                 {
-                                localeEntries[el]
+                                localeEntries[name] !== undefined ? localeEntries[name] : name
                             } </option>
                         );
                     })

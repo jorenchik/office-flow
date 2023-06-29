@@ -24,7 +24,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::redirect('/', '/dashboard');
+Route::redirect('/', '/appointments');
 
 Route::middleware(['protect'])->group(function () {
 
@@ -38,7 +38,24 @@ Route::middleware(['protect'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
 
-    Route::get('/appointments', [AppointmentsController::class, 'show'])->name('appointments');
+        Route::get('/appointments', [AppointmentsController::class, 'index'])->name('appointments.index');
+
+        Route::get('/appointments/apply', [AppointmentsController::class, 'apply'])->name('appointments.apply');
+
+        Route::post('/appointments/store', [AppointmentsController::class, 'store'])->name('appointments.store');
+
+        Route::get('/appointments/edit/{id}', [AppointmentsController::class, 'edit'])->name('appointments.edit');
+
+        Route::get('/appointments/view/{id}', [AppointmentsController::class, 'view'])->name('appointments.view');
+
+        Route::post('/appointments/cancel', [AppointmentsController::class, 'cancel'])->name('appointments.cancel');
+
+        Route::post('/appointments/delete', [AppointmentsController::class, 'delete'])->name('appointments.delete');
+
+        Route::post('/appointments/confirm', [AppointmentsController::class, 'confirm'])->name('appointments.confirm');
+
+        Route::put('/appointments/update', [AppointmentsController::class, 'update'])->name('appointments.update');
+
 
 
     Route::get('/checkins', [CheckinController::class, 'show'])->name('checkin');
