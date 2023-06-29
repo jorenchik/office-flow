@@ -6,7 +6,7 @@ export default function InputError({
     return message ? (
         <p {...props}
             className={
-                "text-sm text-red-600 " + className
+                "text-lg text-red-600 " + className
         }>
             {message} </p>
     ) : null;
