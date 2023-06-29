@@ -12,6 +12,11 @@ use App\Models\Position;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Image\Manipulations;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 
 /**
@@ -21,9 +26,9 @@ use Spatie\Permission\Traits\HasRoles;
  *
  *  
  */
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable implements JWTSubject, HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, InteractsWithMedia; 
 
     /**
      * The attributes that are mass assignable.
@@ -59,6 +64,17 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this
+            ->addMediaConversion('preview')
+            ->fit(Manipulations::FIT_CROP, 300, 300)
+            ->format('jpg')
+            ->nonQueued();
+    }
+
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.

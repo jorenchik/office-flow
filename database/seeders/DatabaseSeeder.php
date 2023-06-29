@@ -20,6 +20,8 @@ use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Database\Seeder;
 use Faker\Factory;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -30,6 +32,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+         // Clear all media
+        Media::query()->truncate();
         $faker = Factory::create();
 
         // Application statuses
@@ -125,6 +129,7 @@ class DatabaseSeeder extends Seeder
 
         $floorCount = 4;
         $usedDepartments = [];
+        $officePhotos = Storage::disk('public')->files('seed/images/offices');
         for ($i = 0; $i < $floorCount; ++$i) {
             $officeCount = $faker->numberBetween(3, 6);
             for ($k = 0; $k < $officeCount; ++$k) {
@@ -133,6 +138,11 @@ class DatabaseSeeder extends Seeder
                     'presenting_ability' => $faker->boolean(),
                     'employee_using_possibility' => $faker->boolean(),
                 ]);
+                $randomPhotoPath = $faker->randomElement($officePhotos);
+                $office->addMedia(Storage::disk('public')->path($randomPhotoPath))
+                        ->preservingOriginal()
+                        ->toMediaCollection();
+
                 $department = $departments[$i];
                 $office->department()->associate($department);
                 ;
@@ -269,12 +279,21 @@ class DatabaseSeeder extends Seeder
         $users = User::factory()->count(env('USER_SEED_COUNT'))->create();
         $admins = User::factory()->count(env('ADMIN_SEED_COUNT'))->create();
         $employees = User::factory()->count(env('EMPLOYEE_SEED_COUNT'))->create();
+        $peoplePhotos = Storage::disk('public')->files('seed/images/people');
         foreach ($users as $user) {
             $user->assignRole($userRole);
+            $randomPhotoPath = $faker->randomElement($peoplePhotos);
+            $user->addMedia(Storage::disk('public')->path($randomPhotoPath))
+                ->preservingOriginal()
+                ->toMediaCollection();
             $user->save();
         }
         foreach ($admins as $user) {
             $user->assignRole($adminRole);
+            $randomPhotoPath = $faker->randomElement($peoplePhotos);
+            $user->addMedia(Storage::disk('public')->path($randomPhotoPath))
+                ->preservingOriginal()
+                ->toMediaCollection();
             $user->save();
         }
         foreach ($employees as $user) {
@@ -287,6 +306,12 @@ class DatabaseSeeder extends Seeder
             $userPosition->user()->associate($user);
             $userPosition->position()->associate($randomAvailablePosition);
             $user->assignRole($employeeRole);
+          
+            $randomPhotoPath = $faker->randomElement($peoplePhotos);
+            $user->addMedia(Storage::disk('public')->path($randomPhotoPath))
+                ->preservingOriginal()
+                ->toMediaCollection();
+
             $userPosition->save();
         }
 
