@@ -17,8 +17,8 @@ export default function Footer({ className }) {
 
     return (
         <footer className={classes}>
-            <div className="h-16 mt-14 w-full bg-cyan-700 flex justify-between px-[13%]">
-                <div id="header-links" className="flex mr-4">
+            <div className="flex h-16 mt-14 w-full bg-cyan-700 px-[13%]">
+                <div id="header-links" className="flex justify-between w-full mr-4">
                     <div className="flex p-2 py-1 my-auto space-x-4">
                         <FooterLink href={route("about")}>
                             {localeEntries["about"]}
@@ -32,9 +32,10 @@ export default function Footer({ className }) {
                         <FooterLink href={route("account")}>
                             {localeEntries["account"]}
                         </FooterLink>
+                    </div>
+                    <div className="flex p-2 py-1 my-auto">
                         <form onSubmit={submit}>
                             <FooterLink isButton={true} type="submit">
-                                {" "}
                                 {localeEntries["logout"]}{" "}
                             </FooterLink>
                         </form>
