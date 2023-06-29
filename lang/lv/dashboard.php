@@ -13,4 +13,5 @@ return [
 	'visitsThisWeek' => 'Vizītes mēnesī',
 	'checkInsThisMonth' => 'Reģistrācijas mēnesī',
 	'checkInsThisWeek' => 'Reģistrācijas nedēļā',
+	'notAtWork' => 'Jūs neesat darbā'
 ];

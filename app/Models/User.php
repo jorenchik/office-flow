@@ -107,7 +107,7 @@ class User extends Authenticatable implements JWTSubject, HasMedia
             $endWorkTime = $endWorkTime ? Carbon::createFromFormat('Y-m-d H:i:s', $endWorkTime->registered_at) : Carbon::now();
 
             $totalBreakTime = $this->getTotalBreakTime($today);
-            return Carbon::createFromFormat('Y-m-d H:i:s', $startWorkTime->registered_at)->diffInRealMinutes($endWorkTime) - $totalBreakTime;
+            return Carbon::createFromFormat('Y-m-d H:i:s', $startWorkTime->registered_at)->diffInRealSeconds($endWorkTime) - $totalBreakTime;
         }
 
         return 0;

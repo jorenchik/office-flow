@@ -30,10 +30,10 @@ export default function Dashboard({ weekDay, now, locale, localeEntries, auth, t
                                 </Infopanel>
                                 <Infopanel>
                                     <span className="w-full text-5xl font-light text-slate-700">
-                                        {timeAtWork} {localeEntries['in']}
+                                        {timeAtWork ? `${timeAtWork} ${localeEntries['in']}` : localeEntries['notAtWork']}
                                     </span>
                                     <span className="w-full text-2xl font-light text-slate-600">
-                                        {localeEntries['checkedIn']} {localeEntries['at']} {lastRegistered}
+                                        {`${localeEntries['checkedIn']} ${localeEntries['at']} ${lastRegistered}`} 
                                     </span>
                                 </Infopanel>
                             </SectionRow>

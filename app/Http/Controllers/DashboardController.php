@@ -21,10 +21,10 @@ class DashboardController extends BaseController
 
         if($minutesAtWork)
         {
-            $interval = CarbonInterval::minutes($minutesAtWork);
+            $interval = CarbonInterval::seconds($minutesAtWork);
             $timeAtWork = $interval->cascade()->forHumans(['short' => true]);
         } else {
-            $timeAtWork = 'notAt';
+            $timeAtWork = null;
         }
         
         $now = Carbon::now()->format('H:i');
