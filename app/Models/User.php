@@ -86,6 +86,41 @@ class User extends Authenticatable implements JWTSubject, HasMedia
         return $this->getKey();
     }
 
+    public function getLastCheckIn()
+    {
+        return CheckInOut::where('user_id', $this->id)
+            ->whereDate('registered_at', Carbon::today())
+            ->latest('registered_at')
+            ->first();
+        
+    }
+
+    public function getAvailableCheckInTypes()
+    {
+        $lastCheckIn = $this->getLastCheckIn();
+        $checkInTypes = [];
+        if ($lastCheckIn) {
+            switch ($lastCheckIn->type_id) {
+                case CheckInOutType::where('name', 'Start')->first()->id:
+                case CheckInOutType::where('name', 'Start from break')->first()->id:
+                    $checkInTypes = ['End', 'End for a break'];
+                    break;
+                case CheckInOutType::where('name', 'End for a break')->first()->id:
+                    $checkInTypes = ['Start from break', 'End due to health condition', 'End on instruction'];
+                    break;
+                case CheckInOutType::where('name', 'End')->first()->id:
+                case CheckInOutType::where('name', 'End on instruction')->first()->id:
+                case CheckInOutType::where('name', 'End due to health condition')->first()->id:
+                    $checkInTypes = ['Start'];
+            }
+        } else {
+            $checkInTypes = ['Start'];
+        }
+
+        return $checkInTypes;
+    }
+
+
     /**
      * Return a key value array, containing any custom claims to be added to the JWT.
      *

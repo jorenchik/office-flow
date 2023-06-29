@@ -36,6 +36,22 @@ Route::middleware(['protect'])->group(function () {
     
     Route::get('/account', [ProfileController::class, 'show'])->name('account');
 
+        Route::get('/checkin', [CheckinController::class, 'index'])->name('checkin.index');
+
+        Route::get('/checkin/register', [CheckinController::class, 'register'])->name('checkin.register');
+
+        Route::post('/checkin/store', [CheckinController::class, 'store'])->name('checkin.store');
+
+        Route::post('/checkin/edit/{id}', [CheckinController::class, 'edit'])->name('checkin.edit');
+
+        Route::post('/checkin/store/employee', [CheckinController::class, 'storeEmployee'])->name('checkin.storeEmployee');
+
+        Route::get('/checkin/edit/{id}', [CheckinController::class, 'edit'])->name('checkins.edit');
+
+        Route::get('/checkin/view/{id}', [CheckinController::class, 'view'])->name('checkin.view');
+
+        Route::post('/checkin/delete', [CheckinController::class, 'delete'])->name('checkin.delete');
+
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
 
         Route::get('/appointments', [AppointmentsController::class, 'index'])->name('appointments.index');

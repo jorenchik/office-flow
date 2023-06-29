@@ -10,6 +10,7 @@ class AvailableTime extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'employee_id',
         'starting_at',
         'ending_at'
