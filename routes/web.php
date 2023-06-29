@@ -72,11 +72,19 @@ Route::middleware(['protect'])->group(function () {
 
         Route::put('/appointments/update', [AppointmentsController::class, 'update'])->name('appointments.update');
 
+        Route::get('/offices', [OfficeController::class, 'index'])->name('offices.index');
 
+        Route::get('/offices/view/{id}', [OfficeController::class, 'view'])->name('offices.view');
 
-    Route::get('/checkins', [CheckinController::class, 'show'])->name('checkin');
+        Route::get('/offices/edit/{id}', [OfficeController::class, 'edit'])->name('offices.edit');
 
-    Route::get('/offices', [OfficeController::class, 'show'])->name('offices');
+        Route::post('/offices/delete', [OfficeController::class, 'delete'])->name('offices.delete');
+
+        Route::get('/offices/create', [OfficeController::class, 'create'])->name('offices.create');
+
+        Route::put('/offices/store', [OfficeController::class, 'store'])->name('offices.store');
+
+        Route::put('/offices/update', [OfficeController::class, 'update'])->name('offices.update');
 
     Route::get('/reviews', [ReviewController::class, 'show'])->name('reviews');
 

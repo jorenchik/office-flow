@@ -36,6 +36,37 @@ class Office extends Model implements HasMedia
             ->format('jpg')
             ->nonQueued();
     }
+
+    public function updateWorkplaces()
+    {
+        $workplaces = Workplace::where('office_id', $this->id)->get();
+        $existingWorkplaceCount = $workplaces->count();
+        $desiredWorkplaceCount = $this->workplace_count;
+        if ($desiredWorkplaceCount < $existingWorkplaceCount) {
+            $workplacesToBeDeleted = $workplaces->slice($desiredWorkplaceCount);
+
+            $workplacesToBeDeleted->each(function ($workplace) {
+                $workplace->checksInsOut()->delete();
+                $checkIns = CheckInOut::where('workplace_id', $workplace->id)->where('office_id', $this->id)->get();
+
+                foreach($checkIns as $checkIn)
+                {
+                    $checkIn->delete();
+                }
+                $workplace = DB::table('workplaces')->where('office_id', $this->id)->where('id', $workplace->id)->delete();
+            });
+        } elseif ($desiredWorkplaceCount > $existingWorkplaceCount) {
+            for ($i = $existingWorkplaceCount + 1; $i <= $desiredWorkplaceCount; $i++) {
+                $workplace = new Workplace();
+                $workplace->id = $i;
+                $workplace->office_id = $this->id;
+                // Set other attributes of the workplace as needed
+                $workplace->save();
+            }
+        }
+    }
+
+
     public function workplaces()
     {
         return $this->hasMany(Workplace::class);
