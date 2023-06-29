@@ -1,22 +1,37 @@
-import { makeClasses } from "@/Helpers/classHelper";
-import { Link } from "@inertiajs/react";
-import { useLocale, useLocaleEntries } from "../Locale/LocaleContext";
-import { useEffect } from "react";
+import {makeClasses} from "@/Helpers/classHelper";
+import {Link} from "@inertiajs/react";
+import {useLocale, useLocaleEntries} from "../Locale/LocaleContext";
+import { usePage } from "@inertiajs/react";
 
-export default function Navbar({ className, activeElement }) {
+export default function Navbar({ className, activeElement}) {
     const locale = useLocale();
     const localeEntries = useLocaleEntries();
     const classes = makeClasses("flex h-[5rem]", className);
     let elements;
+    const { auth } = usePage().props;
+    const userRole = auth.role;
 
     function setElements() {
-        elements = [
-            [localeEntries["dashboard"], route("dashboard")],
-            [localeEntries["appointments"], route("appointments")],
-            [localeEntries["checkIns"], route("checkin")],
-            [localeEntries["offices"], route("offices")],
-            [localeEntries["reviews"], route("reviews")],
-        ];
+        if (userRole.name === 'employee')
+        {
+            elements = [
+                [localeEntries["dashboard"], route('dashboard')],
+                [localeEntries["appointments.index"], route('appointments.index')],
+                [localeEntries["checkins.index"], route('checkin.index')],
+                [localeEntries["offices.index"], route('offices.index')],
+            ];
+        } else if (userRole.name === 'user') {
+            elements = [
+                [localeEntries["appointments.index"], route('appointments.index')],
+                [localeEntries["offices.index"], route('offices.index')],
+            ]    
+        } else if (userRole.name === 'admin') {
+            elements = [
+                [localeEntries["appointments.index"], route('appointments.index')],
+                [localeEntries["checkins.index"], route('checkin.index')],
+                [localeEntries["offices.index"], route('offices.index')],
+            ];
+        }
     }
 
     setElements();
@@ -41,10 +56,10 @@ export default function Navbar({ className, activeElement }) {
                                 el[0] == activeElement ? 'bg-cyan-700 text-white' : 'text-gray-500 bg-slate-200'
                             }`
                         }>
-                                <span className="m-auto font-bold">
+                            <span className="m-auto font-bold">
                                     {el[0]}
                                 </span>
-                            </div>
+                        </div>
                     </Link>
                 );
             })}
