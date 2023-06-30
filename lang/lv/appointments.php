@@ -18,6 +18,7 @@ return [
 	"name" => 'Vārds',
 	"email" => 'Ē-pasts',
 	"cancel" => "Atcelt",
+	'viewingAppointment' => 'Vizīte',
 
 	"applyForAppointment" => "Pieteikties vizītei",
 	"appointmentTimeSlot" => "Laiks tikšanai",

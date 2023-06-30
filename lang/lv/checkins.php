@@ -32,6 +32,7 @@ return [
     "End on instruction" => "Beigt pēc norādījuma",
     "Faulty" => "Nepareizs",
     "employee" => "Darbinieks",
+    "viewingCheckIn" => "Reģistrācija",
     "user" => "Klients",
     "admin" => "Administators",
     "checkInUpdateSuccess" => "Jūs esat veiksmīgi rediģējuši reģistrāciju",
