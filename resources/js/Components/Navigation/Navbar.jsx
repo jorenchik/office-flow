@@ -28,7 +28,7 @@ export default function Navbar({ className, activeElement}) {
         } else if (userRole.name === 'admin') {
             elements = [
                 [localeEntries["appointments.index"], route('appointments.index')],
-                [localeEntries["checkins.index"], route('checkin.index')],
+                [localeEntries["checkin.index"], route('checkin.index')],
                 [localeEntries["offices.index"], route('offices.index')],
             ];
         }
