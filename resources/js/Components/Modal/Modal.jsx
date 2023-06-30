@@ -64,7 +64,7 @@ export default function Modal({
           leaveFrom="opacity-100 translate-y-0 sm:scale-100"
           leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
           <Dialog.Panel className={`overflow-hidden bg-white w-1/3 rounded-3xl h-1/4 shadow-xl transition-all mx-auto`}>
-            <div className={`h-full flex items-center justify-center text-2xl uppercase`}>
+            <div className={`h-full flex flex-wrap items-center justify-center text-2xl text-center`}>
               {content}
             </div>
             {type === 'prompt' && (
