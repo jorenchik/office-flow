@@ -17,11 +17,11 @@ class DashboardController extends BaseController
             return redirect('/');
         }
 
-        $minutesAtWork = $user->getTimeAtWork();
+        $secondsAtWork = $user->getTimeAtWork();
 
-        if($minutesAtWork)
+        if($secondsAtWork)
         {
-            $interval = CarbonInterval::seconds($minutesAtWork);
+            $interval = CarbonInterval::seconds($secondsAtWork);
             $timeAtWork = $interval->cascade()->forHumans(['short' => true]);
         } else {
             $timeAtWork = null;

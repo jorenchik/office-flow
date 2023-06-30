@@ -91,27 +91,61 @@ class User extends Authenticatable implements JWTSubject, HasMedia
     public function getTimeAtWork()
     {
         $today = Carbon::today();
-        $startWorkTime = CheckInOut::where('user_id', $this->id)
+
+        $startWorkTimes = CheckInOut::where('user_id', $this->id)
             ->whereDate('registered_at', $today)
             ->where('type_id', CheckInOutType::where('name', 'Start')->first()->id)
-            ->first();
+            ->orderBy('registered_at')
+            ->get();
 
-        if($startWorkTime)
-        {
-            $endWorkTime = CheckInOut::where('user_id', $this->id)
-                ->whereDate('registered_at', $today)
-                ->where('type_id', CheckInOutType::where('name', 'End')->first()->id)
-                ->latest('registered_at')
-                ->first();
+        $endWorkTimes = CheckInOut::where('user_id', $this->id)
+            ->whereDate('registered_at', $today)
+            ->where('type_id', CheckInOutType::where('name', 'End')->first()->id)
+            ->orderBy('registered_at')
+            ->get();
 
-            $endWorkTime = $endWorkTime ? Carbon::createFromFormat('Y-m-d H:i:s', $endWorkTime->registered_at) : Carbon::now();
+        $totalWorkTimeInSeconds = 0;
 
-            $totalBreakTime = $this->getTotalBreakTime($today);
-            return Carbon::createFromFormat('Y-m-d H:i:s', $startWorkTime->registered_at)->diffInRealSeconds($endWorkTime) - $totalBreakTime;
+        foreach ($startWorkTimes as $i => $startWorkTime) {
+            $startTime = Carbon::createFromFormat('Y-m-d H:i:s', $startWorkTime->registered_at);
+            if (isset($endWorkTimes[$i])) {
+                $endTime = Carbon::createFromFormat('Y-m-d H:i:s', $endWorkTimes[$i]->registered_at);
+                $totalWorkTimeInSeconds += $startTime->diffInRealSeconds($endTime);
+            } else {
+                // If there's no corresponding end time for a start time, check if currently on break or not at work
+                $latestActivity = CheckInOut::where('user_id', $this->id)
+                    ->whereDate('registered_at', $today)
+                    ->latest('registered_at')
+                    ->first();
+            
+                $types = [];
+                $type1 = CheckInOutType::where('name', 'End for a break')->first();
+                if($type1)
+                {
+                    $types[] = $type1->id;
+                }
+                $type2 = CheckInOutType::where('name', 'End due to health condition')->first();
+                if($type2)
+                {
+                    $types[] = $type2->id;
+                }
+                $type3 = CheckInOutType::where('name', 'End on instruction')->first();
+                if($type3)
+                {
+                    $types[] = $type3->id;
+                }
+                if ($latestActivity && !in_array($latestActivity->type_id,$types) && 
+                    $latestActivity->type_id != CheckInOutType::where('name', 'End')->first()->id) {
+                    $totalWorkTimeInSeconds += $startTime->diffInSeconds(Carbon::now());
+                }
+            }
         }
 
-        return 0;
+        $totalBreakTime = $this->getTotalBreakTime($today);
+
+        return $totalWorkTimeInSeconds - $totalBreakTime;
     }
+
 
 
     private function getTotalBreakTime($day)
@@ -131,9 +165,10 @@ class User extends Authenticatable implements JWTSubject, HasMedia
                 ->where('registered_at', '>', $startBreakTime->registered_at)
                 ->first();
 
-            $endBreakTime = $endBreakTime ? Carbon::createFromFormat('Y-m-d H:i:s', $endBreakTime->registered_at) : Carbon::now();
-
-            $totalBreakTime += Carbon::createFromFormat('Y-m-d H:i:s', $startBreakTime->registered_at)->diffInRealMinutes($endBreakTime);
+            if ($endBreakTime) {
+                $endBreakTime = Carbon::createFromFormat('Y-m-d H:i:s', $endBreakTime->registered_at);
+                $totalBreakTime += Carbon::createFromFormat('Y-m-d H:i:s', $startBreakTime->registered_at)->diffInRealMinutes($endBreakTime);
+            }
         }
 
         return $totalBreakTime;
