@@ -44,7 +44,7 @@ export default function UpdateProfileInformation({
 
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <InputLabel htmlFor="name" value={localeEntries['name']} />
 
                     <TextInput
                         id="name"
@@ -60,7 +60,7 @@ export default function UpdateProfileInformation({
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="last_name" value="Last Name" />
+                    <InputLabel htmlFor="last_name" value={localeEntries['lastName']} />
 
                     <TextInput
                         id="last_name"
@@ -75,7 +75,7 @@ export default function UpdateProfileInformation({
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="phone_number" value="Phone Number" />
+                    <InputLabel htmlFor="phone_number" value={localeEntries['phoneNumber']} />
 
                     <TextInput
                         id="phone_number"
@@ -90,7 +90,7 @@ export default function UpdateProfileInformation({
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="work_phone_number" value="Work Phone Number" />
+                    <InputLabel htmlFor="work_phone_number" value={localeEntries['workPhoneNumber']} />
 
                     <TextInput
                         id="work_phone_number"
@@ -104,7 +104,7 @@ export default function UpdateProfileInformation({
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="email" value={localeEntries['email']} />
 
                     <TextInput
                         id="email"

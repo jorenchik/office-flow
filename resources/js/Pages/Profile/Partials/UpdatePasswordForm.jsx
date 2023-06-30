@@ -64,7 +64,7 @@ export default function UpdatePasswordForm({ className = "" }) {
                 <div>
                     <InputLabel
                         htmlFor="current_password"
-                        value="Current Password"
+                        value={localeEntries['currentPassword']}
                     />
 
                     <TextInput
@@ -86,7 +86,7 @@ export default function UpdatePasswordForm({ className = "" }) {
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="password" value="New Password" />
+                    <InputLabel htmlFor="password" value={localeEntries['newPassword']} />
 
                     <TextInput
                         id="password"
@@ -104,7 +104,7 @@ export default function UpdatePasswordForm({ className = "" }) {
                 <div>
                     <InputLabel
                         htmlFor="password_confirmation"
-                        value="Confirm Password"
+                        value={localeEntries['confirmPassword']}
                     />
 
                     <TextInput
