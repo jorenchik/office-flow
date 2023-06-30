@@ -378,39 +378,14 @@ class OfficeController extends BaseController
 
     private function getUserColumns($user)
     {
-        $columnsShown = [];
-        if(!$user->hasPermissionTo('view all offices'))
-        {
-            if($user->hasRole('user'))
-            {
-                $columnsShown = [
-                    ['column' => 'offices.id', 'sort' => true],
-                    ['column' => 'offices.capacity', 'sort' => true],
-                    ['column' => 'offices.presenting_ability'],
-                    ['column' => 'offices.employee_using_possibility', 'hidden' => true]
-                ];
-            }
-            else if($user->hasRole('employee'))
-            {
-                $columnsShown = [
-                    ['column' => 'offices.id', 'sort' => true],
-                    ['column' => 'offices.capacity', 'sort' => true],
-                    ['column' => 'offices.presenting_ability', 'localized' => true],
-                    ['column' => 'offices.employee_using_possibility', 'localized' => true]
-                ];
-            } 
-        }  
-        else 
-        {
             $columnsShown = [
                 ['column' => 'offices.id', 'sort' => true],
                 ['column' => 'offices.capacity', 'sort' => true],
-                ['column' => 'offices.presenting_ability'],
                 ['column' => 'offices.workplace_count', 'sort' => true],
-                ['column' => 'offices.department_id', 'sort' => true],
+                ['column' => 'departments.name', 'sort' => true],
+                ['column' => 'offices.presenting_ability', 'localized' => true],
                 ['column' => 'offices.employee_using_possibility', 'localized' => true]
             ];
-        }
         return $columnsShown;
     }
 

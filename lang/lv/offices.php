@@ -18,5 +18,8 @@ return [
     "officeCreationSuccess" => "Ofiss ir veiksmīgi izveidots",
     "officeUpdateSuccess" => "Ofiss ir veiksmīgs rediģēts",
     "officeDeletionSuccess" => "Ofiss ir veiksmīgi izdzēsts",
-    "departments.name" => "Departamenta nosaukums"
+    "departments.name" => "Departamenta nosaukums",
+    "department" => "Departamenta nosaukums",
+    "presenting_ability" => "Prezentācijas spēja",
+    "employee_using_possibility" => "Darbinieku izmantošanas iespēja",
 ];
