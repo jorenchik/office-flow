@@ -12,7 +12,7 @@ use Inertia\Inertia;
 class OfficeController extends BaseController
 {
     protected $filters = [];
-    protected $activeNavbarTitle = 'offices.index';
+    protected $activeNavbarElement = 'offices.index';
     protected $baseRoute = 'offices';
     protected $sort;
 
@@ -216,7 +216,7 @@ class OfficeController extends BaseController
             'localeEntries' => $localeEntries,
             'attributes' => $attributes,
             'actions' => $actions,
-            'activeNavbarTitle' => $this->activeNavbarTitle, // this should be set in your specific implementation
+            'activeNavbarElement' => $this->activeNavbarElement, 
         ]);
     }
 
