@@ -72,7 +72,7 @@ export default function Register({
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route("checkin.storeEmployee"));
+        post(route("checkin.store"));
     };
 
     return (

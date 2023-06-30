@@ -34,11 +34,11 @@ Route::middleware(['protect'])->group(function () {
 
         Route::get('/checkin/register', [CheckinController::class, 'register'])->name('checkin.register');
 
-        Route::post('/checkin/store', [CheckinController::class, 'store'])->name('checkin.store');
+        Route::post('/checkin/update', [CheckinController::class, 'update'])->name('checkin.update');
 
         Route::post('/checkin/edit/{id}', [CheckinController::class, 'edit'])->name('checkin.edit');
 
-        Route::post('/checkin/store/employee', [CheckinController::class, 'storeEmployee'])->name('checkin.storeEmployee');
+        Route::post('/checkin/store', [CheckinController::class, 'store'])->name('checkin.store');
 
         Route::get('/checkin/edit/{id}', [CheckinController::class, 'edit'])->name('checkins.edit');
 

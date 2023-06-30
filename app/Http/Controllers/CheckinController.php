@@ -341,6 +341,7 @@ class CheckinController extends BaseController
         ];
 
         return Inertia::render('CheckIns/Edit', [
+            'id' => $id,
             'departments' => $departments,
             'offices' => $offices,
             'workplaces' => $workplaces,
@@ -357,15 +358,14 @@ class CheckinController extends BaseController
     }
 
 
-    public function store(Request $request)
+    public function update(Request $request)
     {
-        $user = auth()->user();
-
-        if (!$user->can('edit all check ins')) {
+        if (!auth()->user()->can('edit all check ins')) {
             return redirect()->route('error', ['code' => '401']);
         }
 
         $validated = $request->validate([
+            'id' => 'required',
             'department_id' => 'required|exists:departments,id',
             'office_id' => 'required|exists:offices,id',
             'workplace_id' => 'required|exists:workplaces,id',
@@ -373,18 +373,32 @@ class CheckinController extends BaseController
             'type_id' => 'required|exists:check_in_out_types,id',
         ]);
 
-        $checkIn = new CheckInOut;
+        $checkIn = CheckInOut::find($validated['id']);
+        if(!$checkIn)
+        {
+            return redirect()->route('error', ['code' => '404']);
+        }
+
+
+        $user = $checkIn->user()->get()->first();
+        if(!$user)
+        {
+            return redirect()->route('error', ['code' => '404']);
+        }
+
         $checkIn->user_id = $user->id;
         $checkIn->office_id = $validated['office_id'];
-        $checkIn->registered_at = Carbon::parse($validated['registered_at'])->format('Y-m-d H:i:s');
+        // adjust for timezone
+        $checkIn->registered_at = Carbon::parse($validated['registered_at'])->addHours(3)->format('Y-m-d H:i:s');
         $checkIn->workplace_id = $validated['workplace_id'];
         $checkIn->type_id = $validated['type_id'];
         $checkIn->save();
 
+
         return redirect()->route($this->baseRoute.'.index')->with('message', 'checkInStoreSuccess');
     }
 
-    public function storeEmployee(Request $request)
+    public function store(Request $request)
     {
         $user = auth()->user();
 

@@ -20,6 +20,7 @@ import { rest } from 'lodash';
 
 
 export default function Edit({
+    id,
     chosenDepartmentId,
     chosenOfficeId,
     activeNavbarElement,
@@ -57,6 +58,7 @@ export default function Edit({
         if(field == 'department_id')
             setData('office_id', 0);
     };
+
     
     const {
         data,
@@ -66,6 +68,7 @@ export default function Edit({
         errors,
         reset
     } = useForm({
+        id: id,
         registered_at: registeredAt ? new Date(registeredAt) : undefined,
         department_id: chosenDepartmentId || undefined,
         office_id: chosenOfficeId || undefined,
@@ -75,7 +78,7 @@ export default function Edit({
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route("checkin.store"));
+        post(route("checkin.update"));
     };
 
     return (
@@ -252,6 +255,11 @@ export default function Edit({
                                                 }
                                                 className="my-2"/>
                                             <DatePicker selected={data.registered_at}
+                                                showTimeSelect={true}
+                                                timeFormat="HH:mm"
+                                                timeIntervals={15}
+                                                timeCaption="time"
+                                                dateFormat="MMMM d, yyyy HH:mm"
                                                 onChange={
                                                     (date) => {
                                                         setData('registered_at', date);
