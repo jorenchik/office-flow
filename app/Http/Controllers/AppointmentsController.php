@@ -585,20 +585,20 @@ class AppointmentsController extends BaseController
             {
                 $columnsShown = [
                     ['column' => 'employees.name', 'sort' => true],
-                    ['column' => 'visit_applications.purpose'],
+                    ['column' => 'visit_applications.purpose', 'sort' => true],
                     ['column' => 'visit_applications.starting_at', 'sort' => true],
                     ['column' => 'visit_applications.status_id', 'hidden' => true],
-                    ['column' => 'visit_application_statuses.name', 'sort' => true,'localized' => true ],
+                    ['column' => 'visit_application_statuses.name', 'localized' => true ],
                 ];
             }
             else if($user->hasRole('employee'))
             {
                 $columnsShown = [
                     ['column' => 'users.name', 'sort' => true],
-                    ['column' => 'visit_applications.purpose'],
+                    ['column' => 'visit_applications.purpose', 'sort' => true],
                     ['column' => 'visit_applications.starting_at', 'sort' => true],
                     ['column' => 'visit_applications.status_id', 'hidden' => true],
-                    ['column' => 'visit_application_statuses.name', 'sort' => true,'localized' => true ]
+                    ['column' => 'visit_application_statuses.name', 'localized' => true ],
                 ];
             } 
         }  
@@ -606,10 +606,11 @@ class AppointmentsController extends BaseController
         {
             $columnsShown = [
                 ['column' => 'visit_applications.id', 'sort' => true],
-                ['column' => 'users.name', 'sort'],
+                ['column' => 'visit_applications.purpose', 'sort' => true],
+                ['column' => 'users.name', 'sort' => true],
                 ['column' => 'visit_applications.starting_at', 'sort' => true],
                 ['column' => 'visit_applications.status_id', 'hidden' => true],
-                ['column' => 'visit_application_statuses.name', 'sort' => true, 'localized' => true],
+                ['column' => 'visit_application_statuses.name', 'localized' => true ],
             ];
         }
         return $columnsShown;
