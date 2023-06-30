@@ -21,7 +21,6 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('type_id')->references('id')->on('check_in_out_types');
             $table->foreign('workplace_id')->references('id')->on('workplaces');
-            $table->foreign('office_id')->references('id')->on('offices');
             $table->timestamps();
         });
     }

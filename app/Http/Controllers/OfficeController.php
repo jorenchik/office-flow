@@ -233,15 +233,15 @@ class OfficeController extends BaseController
             'employee_using_possibility' => 'required|boolean',
             'workplace_count' => 'required|integer',
             'department_id' => 'required|exists:departments,id',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'office_image' => 'required|image|max:2048'
         ]);
 
         $validated['user_id'] = $user->id;
 
         $office = Office::create($validated);
 
-        if ($request->hasFile('image')) {
-            $office->addMediaFromRequest('image')->toMediaCollection();
+        if ($request->hasFile('office_image')) {
+            $office->addMediaFromRequest('office_image')->toMediaCollection();
         }
 
         // Create Workplace instances for the office
@@ -253,15 +253,20 @@ class OfficeController extends BaseController
 
     public function update(Request $request)
     {
+        $user = auth()->user();
+        if (!$user->can('edit all offices')) {
+            return redirect()->route('error', ['code' => '401']);
+        }
+
         // Validate the request data
         $validated = $request->validate([
             'id' => 'required',
             'presenting_ability' => 'required|boolean',
-            'capacity' => 'required|integer',
+            'capacity' => 'required|integer|gte:workplace_count',
             'employee_using_possibility' => 'required|boolean',
             'workplace_count' => 'required|integer',
             'department_id' => 'required|exists:departments,id',
-            'image' => 'nullable|image|max:2048',
+            'office_image' => 'nullable|image|max:2048',
         ]);
 
         // Find the office with the given ID
@@ -275,12 +280,12 @@ class OfficeController extends BaseController
         $office->department_id = $validated['department_id'];
         
         // If an image is provided
-        if($request->file('image')) {
+        if($request->file('office_image')) {
             // Remove existing images
             $office->clearMediaCollection();
 
             // Attach the new image
-            $office->addMediaFromRequest('image')->toMediaCollection();
+            $office->addMediaFromRequest('office_image')->toMediaCollection();
         }
 
         $office->updateWorkplaces();
@@ -314,14 +319,8 @@ class OfficeController extends BaseController
         $workplaces = $office->workplaces()->get();
 
         // Free the associated models
-        if($workplaces)
-        {
-            foreach($workplaces as $workplace)
-            {
-                $workplace->checksInsOut()->delete();
-                $workplace = DB::table('workplaces')->where('office_id', $office->id)->where('id', $workplace->id)->delete();
-            }
-        }
+        $office->workplace_count = 0;
+        $office->updateWorkplaces();
         $office->delete();
 
         return back()->withInput()->with('message', 'officeDeletionSuccess');

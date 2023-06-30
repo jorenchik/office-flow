@@ -154,9 +154,7 @@ class DatabaseSeeder extends Seeder
                 $workplaces = [];
                 $workplaceCount = $faker->numberBetween(8, 12);
                 for ($l = 0; $l < $workplaceCount; ++$l) {
-                    $workplace = Workplace::make([
-                        'id' => $l + 1,
-                    ]);
+                    $workplace = Workplace::make();
                     $workplace->office()->associate($office);
                     $workplaces[] = $workplace;
                 }

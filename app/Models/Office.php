@@ -13,7 +13,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Office extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia; 
+    use HasFactory, InteractsWithMedia;
 
     protected $fillable = [
         'presenting_ability',
@@ -43,24 +43,24 @@ class Office extends Model implements HasMedia
         $existingWorkplaceCount = $workplaces->count();
         $desiredWorkplaceCount = $this->workplace_count;
         if ($desiredWorkplaceCount < $existingWorkplaceCount) {
+            // add 1 to desiredWorkplaceCount to delete workplaces and checkins that are greater than the desired count
             $workplacesToBeDeleted = $workplaces->slice($desiredWorkplaceCount);
-
             $workplacesToBeDeleted->each(function ($workplace) {
-                $workplace->checksInsOut()->delete();
-                $checkIns = CheckInOut::where('workplace_id', $workplace->id)->where('office_id', $this->id)->get();
+                DB::table('check_in_outs')
+                    ->where('workplace_id', $workplace->id)
+                    ->where('office_id', $this->id)
+                    ->delete();
 
-                foreach($checkIns as $checkIn)
-                {
-                    $checkIn->delete();
-                }
-                $workplace = DB::table('workplaces')->where('office_id', $this->id)->where('id', $workplace->id)->delete();
+                DB::table('workplaces')
+                    ->where('id', $workplace->id)
+                    ->where('office_id', $this->id)
+                    ->delete();
             });
         } elseif ($desiredWorkplaceCount > $existingWorkplaceCount) {
             for ($i = $existingWorkplaceCount + 1; $i <= $desiredWorkplaceCount; $i++) {
                 $workplace = new Workplace();
                 $workplace->id = $i;
                 $workplace->office_id = $this->id;
-                // Set other attributes of the workplace as needed
                 $workplace->save();
             }
         }

@@ -16,22 +16,21 @@ import { useState } from 'react';
 import { InfoModalProvider, PromptModalProvider } from '@/Components/Modal/ModalContext';
 
 export default function EditOffice({ office, departments, title, localeEntries, locale, auth, actions }) {
-    const { data, setData, put, processing, errors, reset } = useForm({
+    const { data, setData, post, processing, errors, reset } = useForm({
         id: office.id,
         presenting_ability: office.presenting_ability,
         capacity: office.capacity,
         employee_using_possibility: office.employee_using_possibility,
         workplace_count: office.workplace_count,
-        department_id: office.department_id
+        department_id: office.department_id,
+        office_image: undefined,
     });
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData();
-        Object.keys(data).forEach(key => formData.append(key, data[key]));
-        put(route("offices.update"), { ...formData} , {
-            onSuccess: () => reset(),
-        });
+        Object.keys(data).forEach(key => { formData.append(key, data[key]); });
+        post(route("offices.update"));
     };
 
     return (
@@ -78,10 +77,10 @@ export default function EditOffice({ office, departments, title, localeEntries, 
                                     <input type="checkbox" id="employee_using_possibility" name="employee_using_possibility" value={data.employee_using_possibility} onChange={e => setData('employee_using_possibility', e.target.checked)} />
                                 </div>
                                 <div className="p-8 text-slate-600">
-                                    <InputLabel className='mb-5 !text-2xl' htmlFor="image" value={localeEntries['officeImage']}/>
+                                    <InputLabel className='mb-5 !text-2xl' htmlFor="office_image" value={localeEntries['officeImage']}/>
                                     <InputError message={errors['image']} className="my-2" />
-                                    <input id="image" type="file" name="image" 
-                                        onChange={e => setData('image', e.target.files[0])} />
+                                    <input id="image" type="file" name="office_image" 
+                                        onChange={e => setData('office_image', e.target.files[0])} />
                                 </div>
                             </div>
                         </div>

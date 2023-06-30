@@ -12,10 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('workplaces', function (Blueprint $table) {
-            $table->unsignedBigInteger('id');
+            $table->id();
             $table->unsignedBigInteger('office_id');
             $table->foreign('office_id')->references('id')->on('offices');
-            $table->primary(['id', 'office_id']);
             $table->timestamps();
         });
     }

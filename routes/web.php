@@ -80,9 +80,9 @@ Route::middleware(['protect'])->group(function () {
 
         Route::get('/offices/create', [OfficeController::class, 'create'])->name('offices.create');
 
-        Route::put('/offices/store', [OfficeController::class, 'store'])->name('offices.store');
+        Route::post('/offices/store', [OfficeController::class, 'store'])->name('offices.store');
 
-        Route::put('/offices/update', [OfficeController::class, 'update'])->name('offices.update');
+        Route::post('/offices/update', [OfficeController::class, 'update'])->name('offices.update');
 
         Route::post('logout', [AuthController::class, 'logout']) ->name('logout');
 

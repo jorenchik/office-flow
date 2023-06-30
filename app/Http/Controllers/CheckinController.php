@@ -129,10 +129,7 @@ class CheckinController extends BaseController
         $query = DB::table('check_in_outs')
             ->select(['check_in_outs.id', ...$this->makeSelectColumns()])
             ->join('users', 'check_in_outs.user_id', '=', 'users.id')
-            ->join('workplaces', function ($join) {
-                        $join->on('workplaces.id','=', 'check_in_outs.workplace_id')
-                            ->on('workplaces.office_id', '=', 'check_in_outs.office_id');
-                    })
+            ->join('workplaces',  'check_in_outs.workplace_id', '=', 'workplaces.id')
             ->join('offices', 'workplaces.office_id', '=', 'offices.id')
             ->join('departments', 'offices.department_id', '=', 'departments.id')
             ->join('check_in_out_types', 'check_in_outs.type_id', '=', 'check_in_out_types.id');
