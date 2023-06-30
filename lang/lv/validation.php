@@ -212,5 +212,6 @@ return [
         'updated_at'               => 'atjaunināts plkst',
         'username'                 => 'lietotājvārds',
         'year'                     => 'gadā',
+        'capacity'                 => 'ietilpība'
     ],
 ];

@@ -34,4 +34,7 @@ return [
     "employee" => "Darbinieks",
     "user" => "Klients",
     "admin" => "Administators",
+    "checkInUpdateSuccess" => "Jūs esat veiksmīgi rediģējuši reģistrāciju",
+    "checkInStoreSuccess" => "Jūs esat veiksmīgi piereģistrējušies",
+    "checkinDeleteSuccess" => "Jūs esat veiksmīgi izdzēsuši reģistrāciju",
 ];
