@@ -245,7 +245,6 @@ class DatabaseSeeder extends Seeder
         $userRole->givePermissionTo('view all offices');
 
 
-        $employeeRole->givePermissionTo('view dashboard');
         $adminRole->givePermissionTo('view my profile');
         $adminRole->givePermissionTo('edit my profile');
         $adminRole->givePermissionTo('edit my profile');
