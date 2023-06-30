@@ -22,6 +22,7 @@ return [
     "check_in_outs.workplace_id" => "Darba vietas ID",
     "check_in_outs.created_at" => "Izveidošanas laiks",
     "check_in_outs.updated_at" => "Atjaunināšanas laiks",
+    "users.name" => "Darbinieka vārds",
     "Start" => "Sākt",
     "End" => "Beigt",
     "Start from break" => "Sākt pēc pārtraukuma",

@@ -147,23 +147,22 @@ class CheckinController extends BaseController
         if ($user->hasRole('employee')) {
             $columnsShown = [
                 ['column' => 'check_in_outs.id', 'hidden' => true],
-                ['column' => 'offices.id'],
-                ['column' => 'departments.name'],
+                ['column' => 'offices.id', 'sort' => true],
+                ['column' => 'departments.name', 'sort' => true],
                 ['column' => 'check_in_outs.registered_at', 'sort' => true],
                 ['column' => 'check_in_out_types.name', 'sort' => true, 'localized' => true],
-                ['column' => 'check_in_outs.user_id', 'hidden' => true],
                 ['column' => 'check_in_outs.type_id', 'hidden' => true],
                 ['column' => 'check_in_outs.workplace_id', 'hidden' => true],
             ];
         } else if ($user->hasRole('admin')) {
             $columnsShown = [
                 ['column' => 'check_in_outs.id', 'sort' => true],
-                ['column' => 'offices.id'],
-                ['column' => 'check_in_outs.registered_at', 'sort' => true],
-                ['column' => 'check_in_out_types.name', 'sort' => true],
+                ['column' => 'offices.id', 'sort' => true],
+                ['column' => 'check_in_outs.workplace_id', 'sort' => true],
+                ['column' => 'departments.name', 'sort' => true],
                 ['column' => 'users.name', 'sort' => true],
-                ['column' => 'check_in_outs.type_id'],
-                ['column' => 'check_in_outs.workplace_id'],
+                ['column' => 'check_in_outs.registered_at', 'sort' => true],
+                ['column' => 'check_in_out_types.name', 'sort' => true, 'localized' => true],
             ];
         }
         return $columnsShown;
