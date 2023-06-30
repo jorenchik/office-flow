@@ -21,6 +21,7 @@ class AppointmentsController extends BaseController
     protected $activeNavbarElement = 'appointments';
     protected $baseRoute = 'appointments';
     protected $sort;
+    protected $columns;
 
     public function delete(Request $request)
     {

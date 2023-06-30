@@ -15,6 +15,7 @@ class OfficeController extends BaseController
     protected $activeNavbarElement = 'offices.index';
     protected $baseRoute = 'offices';
     protected $sort;
+    protected $columns;
 
     public function index(Request $request)
     {
