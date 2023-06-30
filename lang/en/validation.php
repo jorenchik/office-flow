@@ -266,5 +266,6 @@ return [
         'visitor_id' => 'Visitor id',
         'rating' => 'Rating',
         'visit_application_id' => 'Visit application id',
+        'office_image' => 'Office image',
     ],
 ];

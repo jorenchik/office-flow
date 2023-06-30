@@ -267,5 +267,6 @@ return [
         'visitor_id' => 'Apmeklētāja id',
         'rating' => 'Vērtējums',
         'visit_application_id' => 'Apmeklējuma pieteikuma id',
+        'office_image' => 'Ofisa attēls',
     ],
 ];
