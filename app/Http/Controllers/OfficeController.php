@@ -11,11 +11,33 @@ use Inertia\Inertia;
 
 class OfficeController extends BaseController
 {
-    protected $filters = [];
+    protected $filters = [
+        'department' => [
+            'options' => [],
+            'choice' => 'all',
+        ],
+        'presenting_ability' => [
+            'options' => ['all', 'yes', 'no'],
+            'choice' => 'all',
+        ],
+        'employee_using_possibility' => [
+            'options' => ['all', 'yes', 'no'],
+            'choice' => 'all',
+        ],
+    ];
     protected $activeNavbarElement = 'offices.index';
     protected $baseRoute = 'offices';
     protected $sort;
     protected $columns;
+
+
+    public function __construct()
+    {
+        $departments = DB::table('departments')->get();
+        $this->filters['department']['options'] = [ 'all',...$departments->mapWithKeys(function ($item) {
+            return [$item->id => $item->name];
+        })->toArray()];
+    }
 
     public function index(Request $request)
     {
@@ -33,10 +55,34 @@ class OfficeController extends BaseController
 
         $tableActions = $this->getUserTableActions($user);
 
+        $this->getFilters($request);
+
         $this->columnsShown = $this->getUserColumns($user);
         $query = $this->getUserQuery($user);
         $this->prepareSortEntries();
-        
+
+        foreach($this->filters as $key => $value)
+        {
+            if($key == 'department' && $value['choice'] != 'all' && array_key_exists($value['choice'],$this->filters['department']['options']))
+            {
+                $query->where('departments.id', $value['choice']);
+            }
+            elseif($key == 'presenting_ability' && $value['choice'] != 'all') 
+            {
+                $choice = $value['choice'];
+                if($value['choice'] == 2)
+                    $choice = 0;
+                $query->where('offices.presenting_ability', $choice);
+            }
+            elseif($key == 'employee_using_possibility' && $value['choice'] != 'all') 
+            {
+                $choice = $value['choice'];
+                if($value['choice'] == 2)
+                    $choice = 0;
+                $query->where('offices.employee_using_possibility', $choice);
+            }
+        }
+
         // Make a clone of the query to count total results
         $countQuery = clone $query;
         $totalItemCount = $countQuery->count();
@@ -378,14 +424,14 @@ class OfficeController extends BaseController
 
     private function getUserColumns($user)
     {
-            $columnsShown = [
-                ['column' => 'offices.id', 'sort' => true],
-                ['column' => 'offices.capacity', 'sort' => true],
-                ['column' => 'offices.workplace_count', 'sort' => true],
-                ['column' => 'departments.name', 'sort' => true],
-                ['column' => 'offices.presenting_ability', 'localized' => true],
-                ['column' => 'offices.employee_using_possibility', 'localized' => true]
-            ];
+        $columnsShown = [
+            ['column' => 'offices.id', 'sort' => true],
+            ['column' => 'offices.capacity', 'sort' => true],
+            ['column' => 'offices.workplace_count', 'sort' => true],
+            ['column' => 'departments.name', 'sort' => true],
+            ['column' => 'offices.presenting_ability', 'localized' => true],
+            ['column' => 'offices.employee_using_possibility', 'localized' => true]
+        ];
         return $columnsShown;
     }
 
