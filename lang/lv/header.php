@@ -8,5 +8,6 @@ return [
 	'help' => 'Palīdzība',
 	'account' => 'Konts',
 	'profile' => 'Profils',
+	'home' => 'Sākums',
 	'logout' => 'Iziet'
 ];

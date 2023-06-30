@@ -23,12 +23,6 @@ export default function Footer({ className }) {
                         <FooterLink href={route("about")}>
                             {localeEntries["about"]}
                         </FooterLink>
-                        <FooterLink href={route("contacts")}>
-                            {localeEntries["contacts"]}{" "}
-                        </FooterLink>
-                        <FooterLink href={route("help")}>
-                            {localeEntries["help"]}
-                        </FooterLink>
                         <FooterLink href={route("profile.view")}>
                             {localeEntries["profile"]}
                         </FooterLink>

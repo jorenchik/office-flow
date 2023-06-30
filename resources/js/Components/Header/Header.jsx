@@ -27,22 +27,16 @@ export default function Header({user, className}) {
             <div className="flex mr-4 auto">
                 <div className="flex justify-center items-center p-2 py-1 space-x-10">
                     <HeaderLink href={
+                        '/'
+                    }>
+                        {
+                        localeEntries['home']
+                    } </HeaderLink>
+                    <HeaderLink href={
                         route("about")
                     }>
                         {
                         localeEntries['about']
-                    } </HeaderLink>
-                    <HeaderLink href={
-                        route("contacts")
-                    }>
-                        {
-                        localeEntries['contacts']
-                    } </HeaderLink>
-                    <HeaderLink href={
-                        route("help")
-                    }>
-                        {
-                        localeEntries['help']
                     } </HeaderLink>
                     <HeaderLink href={
                         route("profile.view")

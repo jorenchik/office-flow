@@ -30,10 +30,6 @@ Route::middleware(['protect'])->group(function () {
 
         Route::get('/about', [StaticPageController::class, 'about'])->name('about');
 
-        Route::get('/contacts', [StaticPageController::class, 'contacts'])->name('contacts');
-
-        Route::get('/help', [StaticPageController::class, 'help'])->name('help');
-
         Route::get('/checkin', [CheckinController::class, 'index'])->name('checkin.index');
 
         Route::get('/checkin/register', [CheckinController::class, 'register'])->name('checkin.register');

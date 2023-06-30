@@ -8,7 +8,7 @@ use Inertia\Inertia;
 class StaticPageController extends BaseController
 {
     public function about() {
-        $localeEntries = $this->prepareLocalizationEntries(['navbar', 'languages', 'header']);
+        $localeEntries = $this->prepareLocalizationEntries(['navbar', 'languages', 'header', 'about']);
         return Inertia::render('About', [
             'localeEntries' => $localeEntries
         ]);
