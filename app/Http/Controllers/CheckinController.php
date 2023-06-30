@@ -183,7 +183,11 @@ class CheckinController extends BaseController
 
     public function view($id)
     {
-        $checkIn = CheckInOut::findOrFail($id);
+        $checkIn = CheckInOut::find($id);
+        if(!$checkIn)
+        {
+            return redirect()->route('error', ['code' => '404']);
+        }
 
         $localeEntries = $this->prepareLocalizationEntries(['checkins', 'pagination', 'view', 'action']);
 
@@ -222,7 +226,7 @@ class CheckinController extends BaseController
                 'type' => 'primary'
             ];
         }
-        
+
         return Inertia::render('View', [
             'routeName' => 'viewingCheckIn',
             'localeEntries' => $localeEntries,

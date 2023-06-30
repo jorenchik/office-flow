@@ -167,7 +167,11 @@ class OfficeController extends BaseController
         }
 
         // Find the office with the given ID
-        $office = Office::findOrFail($id);
+        $office = Office::find($id);
+        if(!$office)
+        {
+            return redirect()->route('error', ['code' => '404']);
+        }
 
         // Get all the departments
         $departments = Department::all()->toArray();
@@ -200,7 +204,12 @@ class OfficeController extends BaseController
 
     public function view($id)
     {
-        $office = Office::findOrFail($id);
+        $office = Office::find($id);
+        if(!$office)
+        {
+            return redirect()->route('error', ['code' => '404']);
+        }
+
         $localeEntries = $this->prepareLocalizationEntries(['offices', 'pagination', 'view', 'action']);
 
         $department = $office->department()->get()->first();
@@ -326,7 +335,11 @@ class OfficeController extends BaseController
         ]);
 
         // Find the office with the given ID
-        $office = Office::findOrFail($request['id']);
+        $office = Office::find($request['id']);
+        if(!$office)
+        {
+            return redirect()->route('error', ['code' => '404']);
+        }
 
         // Update the office data
         $office->presenting_ability = $validated['presenting_ability'];

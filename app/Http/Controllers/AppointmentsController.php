@@ -50,7 +50,11 @@ class AppointmentsController extends BaseController
             return redirect()->route('error', ['code' => '401']);
         }
 
-        $visit = VisitApplication::findOrFail($visitId);
+        $visit = VisitApplication::find($visitId);
+        if(!$visit)
+        {
+            return redirect()->route('error', ['code' => '404']);
+        }
 
         // Add the visit time back to available times
         $employee = $visit->employee()->get()->first();
@@ -91,7 +95,11 @@ class AppointmentsController extends BaseController
             return redirect()->route('error', ['code' => '404']);
         }
 
-        $visit = VisitApplication::findOrFail($visitId);
+        $visit = VisitApplication::find($visitId);
+        if(!$visit)
+        {
+            return redirect()->route('error', ['code' => '404']);
+        }
 
         if($user->hasRole('employee')) {
             $employeeId = $visit['employee_id'];
@@ -125,7 +133,11 @@ class AppointmentsController extends BaseController
             return redirect()->route('error', ['code' => '404']);
         }
 
-        $visit = VisitApplication::findOrFail($visitId);
+        $visit = VisitApplication::find($visitId);
+        if(!$visit)
+        {
+            return redirect()->route('error', ['code' => '404']);
+        }
 
         // Allow only employees to confirm the visit
         if(!$user->hasRole('employee')) {
@@ -153,7 +165,11 @@ class AppointmentsController extends BaseController
         $localeEntries = $this->prepareLocalizationEntries(['appointments', 'pagination', 'navbar', 'languages', 'header', 'form']);
 
         // Retrieve the visit application
-        $visit = VisitApplication::findOrFail($visitId);
+        $visit = VisitApplication::find($visitId);
+        if(!$visit)
+        {
+            return redirect()->route('error', ['code' => '404']);
+        }
 
         // Retrieve the employees
         $employees = User::role('employee')->get()->toArray();
@@ -249,7 +265,11 @@ class AppointmentsController extends BaseController
 
         $validated['visitor_id'] = $user->id;
 
-        $employee = User::findOrFail($validated['employee_id']);
+        $employee = User::find($validated['employee_id']);
+        if(!$employee)
+        {
+            return redirect()->route('error', ['code' => '404']);
+        }
 
         // pending status
         $validated['status_id'] = 1; 
@@ -289,7 +309,11 @@ class AppointmentsController extends BaseController
             'status_id' => 'required|exists:visit_application_statuses,id',
         ]);
         
-        $visit = VisitApplication::findOrFail($validated['id']);
+        $visit = VisitApplication::find($validated['id']);
+        if(!$visit)
+        {
+            return redirect()->route('error', ['code' => '404']);
+        }
 
         if($user->hasRole('employee') && $visit['employee_id'] != $user['id']) {
             return redirect()->route('error', ['code' => '401']);
@@ -299,7 +323,11 @@ class AppointmentsController extends BaseController
             return redirect()->route('error', ['code' => '401']);
         }
 
-        $employee = User::findOrFail($validated['employee_id']);
+        $employee = User::find($validated['employee_id']);
+        if(!$employee)
+        {
+            return redirect()->route('error', ['code' => '404']);
+        }
 
         if($request['starting_at'])
         {
@@ -338,7 +366,12 @@ class AppointmentsController extends BaseController
 
     public function view($id)
     {
-        $visitApplication = VisitApplication::findOrFail($id);
+        $visitApplication = VisitApplication::find($id);
+        if(!$visitApplication)
+        {
+            return redirect()->route('error', ['code' => '404']);
+        }
+
         $localeEntries = $this->prepareLocalizationEntries(['appointments', 'pagination', 'view', 'action']);
 
         $visitor = $visitApplication->visitor()->get()->first();
