@@ -24,6 +24,7 @@ class CheckinController extends BaseController
     ];
     protected $baseRoute = 'checkin';
     protected $activeNavbarElement = 'checkin.index';
+    protected $columns;
 
     protected $sort;
 
