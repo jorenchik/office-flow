@@ -34,7 +34,7 @@ class AuthController extends Controller
         }
 
         if ($request['remember']) {
-            $jwtCookie = Cookie::make('jwt', $token, 5000);
+            $jwtCookie = Cookie::forever('jwt', $token, 5000);
         } else {
             $jwtCookie = Cookie::make('jwt', $token);
         }
