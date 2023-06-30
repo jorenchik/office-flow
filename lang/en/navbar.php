@@ -7,7 +7,7 @@ return [
 	"appointments.create" => "Creating appointments",
 	"appointments.edit" => "Editing appointment",
 	"appointments.view" => "Viewing appointment",
-	"checkins.index" => "Check ins",
+	"checkin.index" => "Check ins",
 	"reviews.index" => "Reviews",
 	"offices.index" => "Offices",
 ];
