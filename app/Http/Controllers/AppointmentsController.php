@@ -450,11 +450,15 @@ class AppointmentsController extends BaseController
                 'route' => route('appointments.index'),
                 'type' => 'secondary'
             ],
-            'edit' => [
+        ];
+
+        if(auth()->user()->can('edit all check ins'))
+        {
+            $actions['edit'] = [
                 'route' => route('appointments.edit', ['id' => $visitApplication['id']]),
                 'type' => 'primary'
-            ],
-        ];
+            ];
+        }
         
         return Inertia::render('View', [
             'title' => 'viewingAppointment',
