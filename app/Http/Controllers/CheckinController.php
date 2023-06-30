@@ -213,17 +213,21 @@ class CheckinController extends BaseController
                 'route' => route($this->baseRoute.'.index'),
                 'type' => 'secondary'
             ],
-            'edit' => [
+        ];
+
+        if(auth()->user()->can('edit all check ins'))
+        {
+            $actions['edit'] = [
                 'route' => route($this->baseRoute.'.edit', ['id' => $checkIn->id]),
                 'type' => 'primary'
-            ],
-        ];
+            ];
+        }
 
         return Inertia::render('View', [
             'routeName' => 'viewingCheckIn',
             'localeEntries' => $localeEntries,
-            'attributes' => $attributes,
             'actions' => $actions,
+            'attributes' => $attributes,
             'activeNavbarElement' => $this->activeNavbarElement,
         ]);
     }
