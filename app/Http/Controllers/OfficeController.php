@@ -90,7 +90,7 @@ class OfficeController extends BaseController
         $user = auth()->user();
         if(!$user->can('create offices'))
         {
-            redirect();
+            return redirect()->route('error', ['code' => '401']);
         }
 
         $departments = Department::all()->toArray();
@@ -115,6 +115,11 @@ class OfficeController extends BaseController
 
     public function edit($id)
     {
+        $user = auth()->user();
+        if (!$user->can('edit all offices')) {
+            return redirect()->route('error', ['code' => '401']);
+        }
+
         // Find the office with the given ID
         $office = Office::findOrFail($id);
 
@@ -206,11 +211,15 @@ class OfficeController extends BaseController
                 'route' => route('offices.index'),
                 'type' => 'secondary'
             ],
-            'edit' => [
+        ];
+
+        if($user->can('edit all offices'))
+        {
+            $actions['edit'] = [
                 'route' => route('offices.edit', ['id' => $office['id']]),
                 'type' => 'primary'
-            ],
-        ];
+            ];
+        }
 
         return Inertia::render('View', [
             'title' => 'viewingOffice',
@@ -300,10 +309,10 @@ class OfficeController extends BaseController
 
     public function delete(Request $request)
     {
-        $officeId = $request->id; // retrieve the visit id from the request
+        $officeId = $request->id;
         if(!$officeId)
         {
-            return redirect()->route('error', ['code' => '401']);
+            return redirect()->route('error', ['code' => '404']);
         }
 
         $user = auth()->user();
@@ -314,7 +323,7 @@ class OfficeController extends BaseController
         $office = Office::find($officeId);
         if(!$office)
         {
-            return redirect()->route('error', ['code' => '401']);
+            return redirect()->route('error', ['code' => '404']);
         }
 
         $workplaces = $office->workplaces()->get();
