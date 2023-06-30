@@ -7,7 +7,7 @@ return [
 	"appointments.create" => "Vizītes izveidošana",
 	"appointments.edit" => "Vizītes redigēšana",
 	"appointments.view" => "Vizīte",
-	"checkins.index" => "Reģistrācijas",
+	"checkin.index" => "Reģistrācijas",
 	"reviews.index" => "Atsauksmes",
 	"offices.index" => "Ofisi",
 ];
