@@ -194,7 +194,7 @@ class User extends Authenticatable implements JWTSubject, HasMedia
             switch ($lastCheckIn->type_id) {
                 case CheckInOutType::where('name', 'Start')->first()->id:
                 case CheckInOutType::where('name', 'Start from break')->first()->id:
-                    $checkInTypes = ['End', 'End for a break'];
+                    $checkInTypes = ['End', 'End for a break', 'End due to health condition', 'End on instruction'];
                     break;
                 case CheckInOutType::where('name', 'End for a break')->first()->id:
                     $checkInTypes = ['Start from break', 'End due to health condition', 'End on instruction'];
