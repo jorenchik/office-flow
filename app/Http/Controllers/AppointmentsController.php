@@ -393,7 +393,7 @@ class AppointmentsController extends BaseController
         $describedUserRole = $describedUser->roles()->get()->first();
         $attributes = [
             'image' => [
-                'path' => $visitor->getFirstMediaUrl(),
+                'path' => $describedUser->getFirstMediaUrl(),
                 'alt' => 'Avatar'
             ],
             'mainImageCaption' => [
