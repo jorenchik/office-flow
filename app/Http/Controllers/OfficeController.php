@@ -277,7 +277,7 @@ class OfficeController extends BaseController
         }
 
         return Inertia::render('View', [
-            'title' => 'viewingOffice',
+            'routeName' => 'viewingOffice',
             'localeEntries' => $localeEntries,
             'attributes' => $attributes,
             'actions' => $actions,
