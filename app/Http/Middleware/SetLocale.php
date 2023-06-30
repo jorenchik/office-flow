@@ -14,7 +14,7 @@ use View;
 class SetLocale
 {
     /**
-     * Handle an incoming request.
+     * Set locale for incoming request. 
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
@@ -22,15 +22,17 @@ class SetLocale
     {
         if ($request->hasCookie('locale')) {
             $locale = $request->cookie('locale');
-            App::setLocale($locale);
         } else {
-            // TODO: Make it fallback locale
-            $locale = 'en';
+            // Try to set the locale based on Accept-Language header
+            // Fallback to 'en' if the header is not present or not valid
+            $locale = $request->getPreferredLanguage(['en', 'lv']); // add more languages here
             Cookie::queue(Cookie::make('locale', $locale, 0));
-            App::setLocale($locale);
         }
 
+        App::setLocale($locale);
         Inertia::share('locale', $locale);
+
         return $next($request);
     }
+
 }
