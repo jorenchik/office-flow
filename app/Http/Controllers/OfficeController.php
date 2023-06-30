@@ -358,7 +358,8 @@ class OfficeController extends BaseController
     private function getUserQuery($user)
     {
         $query = DB::table('offices')
-            ->select(['offices.id', ...$this->makeSelectColumns()]);
+            ->select(['offices.id', ...$this->makeSelectColumns()])
+            ->join('departments', 'departments.id','=','offices.department_id');
 
         $role = $user->roles->first();
         if(!$role->hasPermissionTo('view all offices'))
