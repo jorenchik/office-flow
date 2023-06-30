@@ -230,21 +230,21 @@ class OfficeController extends BaseController
         ];
 
         $infoBase = [
+            "offices.id" => $office['id'],
             "offices.presenting_ability" => $office['presenting_ability'],
             "offices.capacity" => $office['capacity'],
             "offices.workplace_count" =>  $office['workplace_count'],
-            "departments.name" =>  $department['name']
+            "departments.name" =>  $department['name'],
+            "offices.employee_using_possibility" => $office['employee_using_possibility'],
         ];
 
         $infoForAdmin = [
             ...$infoBase, 
             "offices.department_id" => $department['id'],
-            "offices.employee_using_possibility" => $office['employee_using_possibility'],
         ];
 
         $infoForEmployee = [
             ...$infoBase, 
-            "offices.employee_using_possibility" => $office['employee_using_possibility'],
         ];
 
         $infoForUser = [
