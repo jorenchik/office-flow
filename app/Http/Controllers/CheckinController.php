@@ -18,9 +18,12 @@ class CheckinController extends BaseController
     protected $filters = [
         'department' => [
             'options' => [],
-            // We'll populate this dynamically later
             'choice' => 'all',
-        ]
+        ],
+        'check_in_out_type' => [
+            'options' => [],
+            'choice' => 'all',
+        ],
     ];
     protected $baseRoute = 'checkin';
     protected $activeNavbarElement = 'checkin.index';
@@ -32,6 +35,11 @@ class CheckinController extends BaseController
     {
         $departments = DB::table('departments')->get();
         $this->filters['department']['options'] = [ 'all',...$departments->mapWithKeys(function ($item) {
+            return [$item->id => $item->name];
+        })->toArray()];
+        
+        $checkInOutTypes = DB::table('check_in_out_types')->get();
+        $this->filters['check_in_out_type']['options'] = ['all',...$checkInOutTypes->mapWithKeys(function ($item) {
             return [$item->id => $item->name];
         })->toArray()];
     }
@@ -64,12 +72,16 @@ class CheckinController extends BaseController
             {
                 $query->where('departments.id', $value['choice']);
             }
+            if($key == 'check_in_out_type' && $value['choice'] != 'all' && array_key_exists($value['choice'],$this->filters['check_in_out_type']['options']))
+            {
+                $query->where('check_in_outs.type_id', $value['choice']);
+            }
         }
 
         // Make a clone of the query to count total results
         $countQuery = clone $query;
         $totalItemCount = $countQuery->count();
-        $itemsPerPage = 4;
+        $itemsPerPage = 6;
         $page = $request->input('page', 1);
         $offset = ($page - 1) * $itemsPerPage;
 

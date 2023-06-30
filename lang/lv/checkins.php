@@ -23,6 +23,7 @@ return [
     "check_in_outs.created_at" => "Izveidošanas laiks",
     "check_in_outs.updated_at" => "Atjaunināšanas laiks",
     "users.name" => "Darbinieka vārds",
+    "check_in_out_type" => "Reģistrācijas veids",
     "Start" => "Sākt",
     "End" => "Beigt",
     "Start from break" => "Sākt pēc pārtraukuma",
