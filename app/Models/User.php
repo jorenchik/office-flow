@@ -98,9 +98,12 @@ class User extends Authenticatable implements JWTSubject, HasMedia
             ->orderBy('registered_at')
             ->get();
 
+        // Include more end types
+        $endWorkTypes = CheckInOutType::whereIn('name', ['End', 'End due to health condition', 'End on instruction', 'Faulty'])->pluck('id')->toArray();
+
         $endWorkTimes = CheckInOut::where('user_id', $this->id)
             ->whereDate('registered_at', $today)
-            ->where('type_id', CheckInOutType::where('name', 'End')->first()->id)
+            ->whereIn('type_id', $endWorkTypes) // Use whereIn to include multiple end types
             ->orderBy('registered_at')
             ->get();
 
@@ -117,27 +120,8 @@ class User extends Authenticatable implements JWTSubject, HasMedia
                     ->whereDate('registered_at', $today)
                     ->latest('registered_at')
                     ->first();
-            
-                $types = [];
-                $type1 = CheckInOutType::where('name', 'End for a break')->first();
-                if($type1)
-                {
-                    $types[] = $type1->id;
-                }
-                $type2 = CheckInOutType::where('name', 'End due to health condition')->first();
-                if($type2)
-                {
-                    $types[] = $type2->id;
-                }
-                $type3 = CheckInOutType::where('name', 'End on instruction')->first();
-                if($type3)
-                {
-                    $types[] = $type3->id;
-                }
-                if ($latestActivity && !in_array($latestActivity->type_id,$types) && 
-                    $latestActivity->type_id != CheckInOutType::where('name', 'End')->first()->id) {
-                    $totalWorkTimeInSeconds += $startTime->diffInSeconds(Carbon::now());
-                }
+
+                $totalWorkTimeInSeconds += $startTime->diffInSeconds(Carbon::now());
             }
         }
 
@@ -150,10 +134,16 @@ class User extends Authenticatable implements JWTSubject, HasMedia
 
     private function getTotalBreakTime($day)
     {
+        // Include 'End', 'End due to health condition', 'End on instruction', 'Faulty' types
+        $startBreakTypes = CheckInOutType::whereIn('name', ['End', 'End due to health condition', 'End on instruction', 'Faulty'])->pluck('id')->toArray();
+
         $startBreakTimes = CheckInOut::where('user_id', $this->id)
             ->whereDate('registered_at', $day)
-            ->where('type_id', CheckInOutType::where('name', 'End for a break')->first()->id)
+            ->whereIn('type_id', $startBreakTypes)
             ->get();
+
+        // Include 'Start', 'Start from break' types
+        $endBreakTypes = CheckInOutType::whereIn('name', ['Start', 'Start from break'])->pluck('id')->toArray();
 
         $totalBreakTime = 0;
 
@@ -161,7 +151,7 @@ class User extends Authenticatable implements JWTSubject, HasMedia
         {
             $endBreakTime = CheckInOut::where('user_id', $this->id)
                 ->whereDate('registered_at', $day)
-                ->where('type_id', CheckInOutType::where('name', 'Start from break')->first()->id)
+                ->whereIn('type_id', $endBreakTypes)
                 ->where('registered_at', '>', $startBreakTime->registered_at)
                 ->first();
 
@@ -173,6 +163,7 @@ class User extends Authenticatable implements JWTSubject, HasMedia
 
         return $totalBreakTime;
     }
+
 
     public function getLastStartCheckInToday() 
     {
