@@ -69,12 +69,12 @@ export default function EditOffice({ office, departments, title, localeEntries, 
                                 <div className="p-8 text-slate-600">
                                     <InputLabel className='mb-5 !text-2xl' htmlFor="presenting_ability" value={localeEntries['offices.presenting_ability']}/>
                                     <InputError message={errors['presenting_ability']} className="my-2" />
-                                    <input type="checkbox" id="presenting_ability" name="presenting_ability" value={data.presenting_ability} onChange={e => setData('presenting_ability', e.target.checked)} />
+                                    <input type="checkbox" id="presenting_ability" name="presenting_ability" checked={data.presenting_ability == '1' ? true : false} onChange={e => setData('presenting_ability', e.target.checked)} />
                                 </div>
                                 <div className="p-8 text-slate-600">
                                     <InputLabel className='mb-5 !text-2xl' htmlFor="employee_using_possibility" value={localeEntries['offices.employee_using_possibility']}/>
                                     <InputError message={errors['employee_using_possibility']} className="my-2" />
-                                    <input type="checkbox" id="employee_using_possibility" name="employee_using_possibility" value={data.employee_using_possibility} onChange={e => setData('employee_using_possibility', e.target.checked)} />
+                                    <input type="checkbox" id="employee_using_possibility" name="employee_using_possibility" checked={data.employee_using_possibility} onChange={e => setData('employee_using_possibility', e.target.checked)} />
                                 </div>
                                 <div className="p-8 text-slate-600">
                                     <InputLabel className='mb-5 !text-2xl' htmlFor="office_image" value={localeEntries['officeImage']}/>

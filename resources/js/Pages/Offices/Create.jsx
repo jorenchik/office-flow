@@ -151,7 +151,7 @@ export default function CreateOffice({
                                                 }
                                                 className="my-2"/>
                                             <input type="checkbox" id="presenting_ability" name="presenting_ability"
-                                                value={
+                                                checked={
                                                     data.presenting_ability
                                                 }
                                                 onChange={
@@ -168,7 +168,7 @@ export default function CreateOffice({
                                                 }
                                                 className="my-2"/>
                                             <input type="checkbox" id="employee_using_possibility" name="employee_using_possibility"
-                                                value={
+                                                checked={
                                                     data.employee_using_possibility
                                                 }
                                                 onChange={
