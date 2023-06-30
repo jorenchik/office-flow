@@ -86,7 +86,7 @@ export function TableFilters({
                 Object.entries(attributes).map(([key, value]) => {
                 return (
                     <Choice title={
-                            localeEntries[key]
+                            localeEntries[key] !== undefined ? localeEntries[key] : key
                         }
                         key={key}
                         attribute={key}
@@ -99,8 +99,7 @@ export function TableFilters({
                 );
             })
         }
-
-            {attributes.length > 0 && <Link onClick={handleClearFilters}>
+            {Object.keys(attributes).length > 0 && <Link onClick={handleClearFilters}>
                 {
                 localeEntries["clearFilters"]
             } </Link>}
@@ -141,7 +140,7 @@ export function Choice({
 
     return (
         <div className="flex items-center space-x-5">
-            <div className="text-2xl">
+            <div className="text-xl">
                 {title}:</div>
             <div>
                 <select onChange={handleChange}
