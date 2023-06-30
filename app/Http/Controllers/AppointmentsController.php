@@ -16,12 +16,26 @@ class AppointmentsController extends BaseController
         'starting_at' => [
             'options' => ['0' => 'all','1' => 'past', '2' => 'future'],
             'choice' => 'all',
-        ]
+        ],
+        'status' => [
+            'options' => [],
+            'choice' => 'all',
+        ],
     ];
+
     protected $activeNavbarElement = 'appointments';
     protected $baseRoute = 'appointments';
     protected $sort;
     protected $columns;
+
+
+    public function __construct()
+    {
+        $statuses = DB::table('visit_application_statuses')->get();
+        $this->filters['status']['options'] = ['all',...$statuses->mapWithKeys(function ($item) {
+            return [$item->id => $item->name];
+        })->toArray()];
+    }
 
     public function delete(Request $request)
     {
@@ -448,6 +462,10 @@ class AppointmentsController extends BaseController
                     $query->whereRaw("starting_at < now()");
                 else if($value['choice'] == '2')
                     $query->whereRaw("starting_at > now()");
+            }
+            if($key == 'status' && $value['choice'] != 'all' && array_key_exists($value['choice'],$this->filters['status']['options']))
+            {
+                $query->where('visit_application_statuses.id', $value['choice']);
             }
         }
 
