@@ -89,7 +89,7 @@ class ProfileController extends BaseController
         ])->save();
 
         // Redirect back to the form with a success message
-        return back()->with('message', 'Password updated successfully.');
+        return back()->with('message', 'passwordUpdateSuccess');
     }
 
     public function view(Request $request)

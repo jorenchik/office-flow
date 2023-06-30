@@ -222,7 +222,7 @@ class CheckinController extends BaseController
                 'type' => 'primary'
             ];
         }
-
+        
         return Inertia::render('View', [
             'routeName' => 'viewingCheckIn',
             'localeEntries' => $localeEntries,
@@ -395,7 +395,7 @@ class CheckinController extends BaseController
         $checkIn->save();
 
 
-        return redirect()->route($this->baseRoute.'.index')->with('message', 'checkInStoreSuccess');
+        return redirect()->route($this->baseRoute.'.index')->with('message', 'checkInUpdateSuccess');
     }
 
     public function store(Request $request)
@@ -420,7 +420,7 @@ class CheckinController extends BaseController
         $checkIn->registered_at = Carbon::now()->format('Y-m-d H:i:s');
         $checkIn->save();
 
-        return redirect()->route($this->baseRoute.'.index')->with('message', 'employeeCheckInStoreSuccess');
+        return redirect()->route($this->baseRoute.'.index')->with('message', 'checkInStoreSuccess');
     }
 
 
@@ -445,7 +445,7 @@ class CheckinController extends BaseController
 
         $checkIn->delete();
 
-        return redirect()->route($this->baseRoute.'.index')->with(['message' => 'checkinDeleteSuccess']);
+        return redirect()->route($this->baseRoute.'.index')->withInput()->with(['message' => 'checkinDeleteSuccess']);
     }
 
 
