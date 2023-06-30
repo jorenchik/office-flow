@@ -59,7 +59,6 @@ class Office extends Model implements HasMedia
         } elseif ($desiredWorkplaceCount > $existingWorkplaceCount) {
             for ($i = $existingWorkplaceCount + 1; $i <= $desiredWorkplaceCount; $i++) {
                 $workplace = new Workplace();
-                $workplace->id = $i;
                 $workplace->office_id = $this->id;
                 $workplace->save();
             }
