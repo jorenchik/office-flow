@@ -12,7 +12,7 @@ import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 import { Link } from '@inertiajs/react';
 import { LocaleContextProvider } from "@/Components/Locale/LocaleContext";
 import { router } from '@inertiajs/react';
-import "react-datepicker/dist/react-datepicker.css";
+import { InfoModalProvider, PromptModalProvider } from '@/Components/Modal/ModalContext';
 
 export default function Apply({chosenEmployeeId, availableTimes, employees, title, localeEntries, locale, auth, actions }) {
     const handleEmployeeChange = (e) => {
@@ -35,6 +35,8 @@ export default function Apply({chosenEmployeeId, availableTimes, employees, titl
     };
 
     return (
+        <InfoModalProvider>
+            <PromptModalProvider>
         <LocaleContextProvider initialLocale={locale} initialLocaleEntries={localeEntries}>
             <AuthenticatedLayout locale={locale} localeEntries={localeEntries} user={auth.user}>
                 <Navbar activeElement={localeEntries['appointments.index']} className="mt-14" />
@@ -83,5 +85,7 @@ export default function Apply({chosenEmployeeId, availableTimes, employees, titl
                 </ContentFrame>
             </AuthenticatedLayout>
         </LocaleContextProvider>
+        </PromptModalProvider>
+        </InfoModalProvider>
     );
 }
